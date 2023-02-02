@@ -1,0 +1,12 @@
+{
+  "name": "bccs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.8.1",
+    "@truffle/hdwallet-provider": "^2.1.5",
+    "dotenv": "^16.0.3",
+    "truffle-hdwallet-provider-klaytn": "^1.4.2"
+  }
+}

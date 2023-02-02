@@ -1,0 +1,17 @@
+{
+  "1": {
+    "rpc": "https://public-node-api.klaytnapi.com/v1/cypress",
+    "status": "on"
+  },
+  "2": { "rpc": "https://public-en-cypress.klaytn.net", "status": "on" },
+  "3": { "rpc": "https://klaytn01.fandom.finance/", "status": "on" },
+  "4": { "rpc": "https://klaytn02.fandom.finance/", "status": "on" },
+  "5": { "rpc": "https://klaytn03.fandom.finance/", "status": "on" },
+  "6": { "rpc": "https://klaytn04.fandom.finance/", "status": "on" },
+  "7": { "rpc": "https://klaytn05.fandom.finance/", "status": "on" },
+  "8": { "rpc": "https://cypress.fandom.finance/archive", "status": "on" },
+  "9": {
+    "rpc": "https://klaytn-mainnet-rpc.allthatnode.com:8551",
+    "status": "on"
+  }
+}

@@ -1,0 +1,152 @@
+11:08:10 [error]: POST /v2/account 라우터가 없습니다.
+11:08:10 [error]: POST /v2/account 라우터가 없습니다.
+11:13:50 [error]: chainId required
+11:14:47 [error]: Unsupported chainId
+11:26:27 [error]: Unsupported chainId
+11:26:33 [error]: Cannot read properties of undefined (reading 'length')
+11:26:43 [error]: Cannot read properties of undefined (reading 'length')
+11:27:00 [error]: Cannot read properties of undefined (reading 'length')
+11:27:37 [error]: Cannot read properties of undefined (reading 'length')
+11:27:43 [error]: Cannot read properties of undefined (reading 'length')
+11:28:10 [error]: Cannot read properties of undefined (reading 'length')
+11:28:20 [error]: Cannot read properties of undefined (reading 'length')
+11:28:45 [error]: Cannot read properties of undefined (reading 'length')
+11:31:41 [error]: Cannot read properties of undefined (reading 'length')
+11:32:11 [error]: Cannot read properties of undefined (reading 'length')
+12:54:36 [error]: POST /v2/account/mnemonic 라우터가 없습니다.
+12:54:36 [error]: POST /v2/account/mnemonic 라우터가 없습니다.
+13:01:04 [error]: keystore is not defined
+13:02:11 [error]: Unexpected token '/', "#" is not valid JSON
+13:10:23 [error]: POST /v2/account/mnemonic1 라우터가 없습니다.
+13:10:23 [error]: POST /v2/account/mnemonic1 라우터가 없습니다.
+13:10:29 [error]: GET /v2/account/mnemonic 라우터가 없습니다.
+13:10:29 [error]: GET /v2/account/mnemonic 라우터가 없습니다.
+13:14:02 [error]: Keystore: Must include seedPhrase in createVault inputs.
+14:19:11 [error]: Invalid keystore V3 format: 'crypto' is not defined.
+14:38:21 [error]: GET /nice%20ports%2C/Tri%6Eity.txt%2ebak 라우터가 없습니다.
+14:38:21 [error]: GET /nice%20ports%2C/Tri%6Eity.txt%2ebak 라우터가 없습니다.
+14:45:55 [error]: Cannot read properties of undefined (reading 'encryptV3')
+14:46:12 [error]: Cannot read properties of undefined (reading 'encryptV3')
+14:46:42 [error]: Cannot read properties of undefined (reading 'encrypt')
+14:51:05 [error]: GET /nice%20ports%2C/Tri%6Eity.txt%2ebak 라우터가 없습니다.
+14:51:05 [error]: GET /nice%20ports%2C/Tri%6Eity.txt%2ebak 라우터가 없습니다.
+15:07:52 [error]: Key derivation failed - possibly wrong password
+15:18:21 [error]: Invalid private key(f764a1780dda07c3b92a4688501397653435da846af002a6c97b94237400606)
+15:18:39 [error]: Invalid private key(2)
+15:18:58 [error]: Key derivation failed - possibly wrong password
+15:19:27 [error]: Invalid address : 0x2dee005b923e510b129c0544b4d52b182e377
+15:25:05 [error]: Key derivation failed - possibly wrong password
+16:08:56 [error]: Returned error: invalid argument 0: json: cannot unmarshal string into Go value of type api.CallArgs
+16:09:04 [error]: Returned error: invalid argument 0: json: cannot unmarshal string into Go value of type api.CallArgs
+16:33:06 [error]: chainId required
+16:33:20 [error]: "to" is missing
+16:33:20 [error]: "to" is missing
+16:33:39 [error]: Account exists with 0xadc565bb88aa72aa14b98cb6196f216900614b3c
+16:33:39 [error]: Account exists with 0xadc565bb88aa72aa14b98cb6196f216900614b3c
+16:44:37 [error]: provider is not a function
+16:44:37 [error]: provider is not a function
+16:45:03 [error]: provider is not a function
+16:45:03 [error]: provider is not a function
+16:47:14 [error]: Returned error: insufficient funds of the sender for value 
+16:47:14 [error]: Returned error: insufficient funds of the sender for value 
+16:47:23 [error]: Returned error: insufficient funds of the sender for value 
+16:47:23 [error]: Returned error: insufficient funds of the sender for value 
+16:47:25 [error]: Returned error: insufficient funds of the sender for value 
+16:47:25 [error]: Returned error: insufficient funds of the sender for value 
+16:47:26 [error]: Returned error: insufficient funds of the sender for value 
+16:47:26 [error]: Returned error: insufficient funds of the sender for value 
+16:48:08 [error]: Returned error: insufficient funds of the sender for value 
+16:48:08 [error]: Returned error: insufficient funds of the sender for value 
+16:48:09 [error]: Returned error: insufficient funds of the sender for value 
+16:48:09 [error]: Returned error: insufficient funds of the sender for value 
+16:48:22 [error]: Returned error: insufficient funds of the sender for value 
+16:48:22 [error]: Returned error: insufficient funds of the sender for value 
+16:48:38 [error]: Returned error: insufficient funds of the sender for value 
+16:48:38 [error]: Returned error: insufficient funds of the sender for value 
+16:48:47 [error]: Returned error: insufficient funds of the sender for value 
+16:48:47 [error]: Returned error: insufficient funds of the sender for value 
+17:11:37 [error]: chainId required
+17:11:51 [error]: Invalid Addressundefined
+17:11:51 [error]: Invalid address
+17:12:44 [error]: Cannot set headers after they are sent to the client
+17:21:48 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:21:48 [error]: Invalid address
+17:22:26 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:22:26 [error]: Invalid address
+17:22:34 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:22:34 [error]: Invalid address
+17:22:40 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:22:40 [error]: Invalid address
+17:22:47 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:22:47 [error]: Invalid address
+17:23:55 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:23:55 [error]: Invalid address
+17:24:09 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:24:09 [error]: Invalid address
+17:24:23 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:24:23 [error]: Invalid address
+17:24:43 [error]: chainId required
+17:25:37 [error]: chainId required
+17:25:40 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:25:40 [error]: Invalid address
+17:25:49 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:25:49 [error]: Invalid address
+17:25:58 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:25:58 [error]: Invalid address
+17:26:05 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:26:05 [error]: Invalid address
+17:26:12 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:26:12 [error]: Invalid address
+17:26:20 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:26:20 [error]: Invalid address
+17:29:45 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:29:45 [error]: Invalid address
+17:30:02 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:02 [error]: Invalid address
+17:30:06 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:06 [error]: Invalid address
+17:30:12 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:12 [error]: Invalid address
+17:30:18 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:18 [error]: Invalid address
+17:30:24 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:24 [error]: Invalid address
+17:30:31 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:31 [error]: Invalid address
+17:30:36 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:36 [error]: Invalid address
+17:30:42 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cㅁ
+17:30:42 [error]: Invalid address
+17:35:51 [error]: Invalid PrivateKey 0xf764a1780dda07c3b92a4688501397653435da846af002a6c97b94237400606bs
+17:35:51 [error]: Invalid privateKey
+17:50:11 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:50:11 [error]: Invalid address
+17:52:04 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:04 [error]: Invalid address
+17:52:13 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:13 [error]: Invalid address
+17:52:22 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:22 [error]: Invalid address
+17:52:27 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:27 [error]: Invalid address
+17:52:33 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:33 [error]: Invalid address
+17:52:40 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:40 [error]: Invalid address
+17:52:46 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:46 [error]: Invalid address
+17:52:53 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:53 [error]: Invalid address
+17:52:59 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:52:59 [error]: Invalid address
+17:53:05 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:53:10 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:53:10 [error]: Invalid address
+17:53:16 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:53:16 [error]: Invalid address
+17:53:21 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:53:21 [error]: Invalid address
+17:53:27 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:53:27 [error]: Invalid address
+17:53:33 [error]: Invalid Address0xadc565Bb88aA72aa14b98Cb6196f216900614b3cs
+17:53:33 [error]: Invalid address
