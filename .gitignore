@@ -21,6 +21,7 @@ npm-debug.log
 blockchain/geth/**
 blockchain/keystore/**
 blockchain/history
+logs
 
 #truffle
 .tern-port
