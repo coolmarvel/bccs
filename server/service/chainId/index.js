@@ -1,11 +1,13 @@
 const { logger } = require("../../utils/winston");
 
+const chainIdList = require("./chainIdList");
+
 const isValidChainId = (req) => {
   return new Promise(async (resolve, reject) => {
     try {
       const chainId = req.headers["x-chain-id"];
 
-      if (chainId === "1001" || chainId === "8217") {
+      if (chainIdList.includes(chainId)) {
         resolve(chainId);
       } else if (chainId === null || chainId === undefined) {
         return reject({ message: "chainId required" });

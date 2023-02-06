@@ -9,6 +9,8 @@ const isValidAddress = require("../../../../../service/checksum/address");
 const isValidPrivateKey = require("../../../../../service/checksum/privateKey");
 const deployKip7Baobab = require("../../../../../service/deployContract/testnet/kip7");
 
+const contractDeploy = require("../../../../../service/contractDeploy");
+
 router.post("/", async (req, res) => {
   try {
     const { address, privateKey, name, symbol, decimals, initialSupply } =
@@ -18,16 +20,18 @@ router.post("/", async (req, res) => {
     await isValidAddress(address);
     await isValidPrivateKey(privateKey);
 
-    const result = await deployKip7Baobab(
-      address,
-      privateKey,
-      name,
-      symbol,
-      decimals,
-      initialSupply
-    );
+    // const result = await deployKip7Baobab(
+    //   address,
+    //   privateKey,
+    //   name,
+    //   symbol,
+    //   decimals,
+    //   initialSupply
+    // );
 
-    res.send({ result });
+    // res.send({ result });
+    const { abi, receipt } = await contractDeploy(name, symbol);
+    res.send({ abi, receipt });
   } catch (error) {
     logger.error(error.message);
     res.send({ message: error.message });

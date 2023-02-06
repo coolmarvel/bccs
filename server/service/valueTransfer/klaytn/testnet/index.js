@@ -19,8 +19,8 @@ const baobabKlayTransfer = (fromAddress, fromPrivateKey, toAddress, value) => {
 
       resolve(receipt);
     } catch (error) {
-      logger.error(error.message);
       await baobab.klay.accounts.wallet.remove(fromAddress);
+      logger.error(error.message);
       return reject(error);
     }
   });

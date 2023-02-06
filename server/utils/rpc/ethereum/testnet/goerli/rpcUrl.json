@@ -1,0 +1,12 @@
+{
+  "1": { "rpc": "https://ethereum-goerli-rpc.allthatnode.com", "status": "on" },
+  "2": { "rpc": "https://rpc.ankr.com/eth_goerli", "status": "on" },
+  "3": {
+    "rpc": "https://goerli.blockpi.network/v1/rpc/public",
+    "status": "on"
+  },
+  "4": {
+    "rpc": "https://goerli.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+    "status": "on"
+  }
+}

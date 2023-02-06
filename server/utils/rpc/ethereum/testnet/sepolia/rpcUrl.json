@@ -1,0 +1,11 @@
+{
+  "1": {
+    "rpc": "https://ethereum-sepolia-rpc.allthatnode.com",
+    "status": "on"
+  },
+  "2": { "rpc": "https://rpc.sepolia.org", "status": "on" },
+  "3": {
+    "rpc": "https://ethereum-sepolia.blockpi.network/v1/rpc/public",
+    "status": "on"
+  }
+}

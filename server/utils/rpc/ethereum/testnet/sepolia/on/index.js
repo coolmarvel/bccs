@@ -1,10 +1,12 @@
 const fs = require("fs");
 
-const dataBuffer = fs.readFileSync("utils/rpc/rpcUrl.json");
+const dataBuffer = fs.readFileSync(
+  "utils/rpc/ethereum/testnet/sepolia/rpcUrl.json"
+);
 const dataJSON = dataBuffer.toString();
 const json = JSON.parse(dataJSON);
 
-const { logger } = require("../../winston");
+const { logger } = require("../../../../../winston");
 
 const updateStatusOn = () => {
   return new Promise(async (resolve, reject) => {
@@ -14,7 +16,10 @@ const updateStatusOn = () => {
 
         json[key].status = "on";
         const jsonData = JSON.stringify(json);
-        fs.writeFileSync("utils/rpc/rpcUrl.json", jsonData);
+        fs.writeFileSync(
+          "utils/rpc/ethereum/testnet/sepolia/rpcUrl.json",
+          jsonData
+        );
       }
 
       resolve(true);

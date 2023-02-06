@@ -1,10 +1,12 @@
 const fs = require("fs");
 
-const dataBuffer = fs.readFileSync("utils/rpc/rpcUrl.json");
+const dataBuffer = fs.readFileSync(
+  "utils/rpc/ethereum/testnet/sepolia/rpcUrl.json"
+);
 const dataJSON = dataBuffer.toString();
 const json = JSON.parse(dataJSON);
 
-const { logger } = require("../../winston");
+const { logger } = require("../../../../../winston");
 
 const rpcUrl = () => {
   return new Promise(async (resolve, reject) => {

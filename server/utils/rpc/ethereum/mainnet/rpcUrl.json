@@ -1,0 +1,9 @@
+{
+  "1": {
+    "rpc": "https://polygon-mainnet-rpc.allthatnode.com:8545",
+    "status": "on"
+  },
+  "2": { "rpc": "https://eth.llamarpc.com", "status": "on" },
+  "3": { "rpc": "https://rpc.ankr.com/eth", "status": "on" },
+  "4": { "rpc": "https://ethereum.publicnode.com", "status": "on" }
+}

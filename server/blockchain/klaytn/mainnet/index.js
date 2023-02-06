@@ -1,6 +1,6 @@
 const Caver = require("caver-js");
 
-const rpcUrl = require("../../../utils/rpc/connect");
+const rpcUrl = require("../../../utils/rpc/klaytn/connect");
 const { logger } = require("../../../utils/winston");
 
 const provider = async () => {

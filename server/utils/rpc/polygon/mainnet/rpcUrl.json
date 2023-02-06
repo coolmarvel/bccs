@@ -1,0 +1,10 @@
+{
+  "1": { "rpc": "https://polygon-rpc.com", "status": "on" },
+  "2": { "rpc": "https://rpc-mainnet.maticvigil.com", "status": "on" },
+  "3": { "rpc": "https://rpc.ankr.com/polygon", "status": "on" },
+  "4": {
+    "rpc": "https://polygon-mainnet-rpc.allthatnode.com:8545",
+    "status": "on"
+  },
+  "5": { "rpc": "https://polygon.llamarpc.com", "status": "on" }
+}

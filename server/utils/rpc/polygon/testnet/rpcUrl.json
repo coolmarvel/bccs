@@ -1,0 +1,10 @@
+{
+  "1": {
+    "rpc": "https://polygon-testnet-rpc.allthatnode.com:8545",
+    "status": "on"
+  },
+  "2": { "rpc": "https://polygon-testnet.public.blastapi.io", "status": "on" },
+  "3": { "rpc": "https://rpc-mumbai.matic.today", "status": "on" },
+  "4": { "rpc": "https://rpc.ankr.com/polygon_mumbai", "status": "on" },
+  "5": { "rpc": "https://rpc-mumbai.maticvigil.com", "status": "on" }
+}

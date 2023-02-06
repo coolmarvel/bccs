@@ -1,0 +1,8 @@
+{
+  "1": { "rpc": "https://bsc-dataseed.binance.org", "status": "on" },
+  "2": { "rpc": "ttps://bsc-dataseed1.binance.org", "status": "on" },
+  "3": { "rpc": "ttps://bsc-dataseed2.binance.org", "status": "on" },
+  "4": { "rpc": "ttps://bsc-dataseed3.binance.org", "status": "on" },
+  "5": { "rpc": "ttps://bsc-dataseed4.binance.org", "status": "on" },
+  "6": { "rpc": "https://bsc-mainnet-rpc.allthatnode.com", "status": "on" }
+}
