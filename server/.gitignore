@@ -2,4 +2,4 @@ pacakje-lock.json
 node_modules
 kaikas*.json
 yarn.lock
-logs
+logs/*
