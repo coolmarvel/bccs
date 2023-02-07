@@ -21,6 +21,9 @@ router.post("/create", async (req, res) => {
     if (mnemonic === undefined) {
       const { address, privateKey, seedPhrase } = await createWallet();
       const prefixPrivateKey = await baobab.utils.addHexPrefix(privateKey);
+      const publicKey = await baobab.klay.accounts.privateKeyToPublicKey(
+        prefixPrivateKey
+      );
       const keystore = await baobab.klay.accounts.encryptV3(
         prefixPrivateKey,
         sha256_hex
@@ -29,6 +32,7 @@ router.post("/create", async (req, res) => {
       res.send({
         address,
         privateKey: prefixPrivateKey,
+        publicKey: publicKey,
         mnemonic: seedPhrase,
         password: sha256_hex,
         keystore,
@@ -39,6 +43,9 @@ router.post("/create", async (req, res) => {
         sha256_hex
       );
       const prefixPrivateKey = await baobab.utils.addHexPrefix(privateKey);
+      const publicKey = await baobab.klay.accounts.privateKeyToPublicKey(
+        prefixPrivateKey
+      );
       const keystore = await baobab.klay.accounts.encryptV3(
         prefixPrivateKey,
         sha256_hex
@@ -47,6 +54,7 @@ router.post("/create", async (req, res) => {
       res.send({
         address,
         privateKey: prefixPrivateKey,
+        publicKey: publicKey,
         mnemonic: seedPhrase,
         password: sha256_hex,
         keystore,
@@ -57,6 +65,9 @@ router.post("/create", async (req, res) => {
         password
       );
       const prefixPrivateKey = await baobab.utils.addHexPrefix(privateKey);
+      const publicKey = await baobab.klay.accounts.privateKeyToPublicKey(
+        prefixPrivateKey
+      );
       const keystore = await baobab.klay.accounts.encryptV3(
         prefixPrivateKey,
         password
@@ -65,6 +76,7 @@ router.post("/create", async (req, res) => {
       res.send({
         address,
         privateKey: prefixPrivateKey,
+        publicKey: publicKey,
         mnemonic: seedPhrase,
         password,
         keystore,
