@@ -8,6 +8,9 @@ const chainIdList = [
   "8217",
   "80001",
   "11155111",
+  "LTC",
+  "BTC",
+  "BTCTEST",
 ];
 
 module.exports = chainIdList;

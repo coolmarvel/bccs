@@ -8,38 +8,211 @@ const bip39 = require("bip39");
 
 const { logger } = require("../../../../utils/winston");
 
-const createWallet = async (mnemonic) => {
+const createWallet = async (mnemonic, chainId) => {
   return new Promise((resolve, reject) => {
     try {
-      const network = bitcoin.networks.bitcoin;
+      const isValidMnemonic = bip39.validateMnemonic(mnemonic);
 
-      if (mnemonic === undefined) {
-        const mnemonic = bip39.generateMnemonic();
-        const seed = bip39.mnemonicToSeedSync(mnemonic);
-        const root = bip32.fromSeed(seed, network);
-        const account = root.derivePath(`m/49'/0'/0'/0'`);
-        const node = account.derive(0).derive(0);
-        const { address } = bitcoin.payments.p2pkh({
-          pubkey: node.publicKey,
-          network: network,
-        });
-        const publicKey = node.publicKey.toString("hex");
-        const privateKey = node.toWIF();
+      // 비트코인 메인넷
+      if (chainId == "BTC") {
+        const network = bitcoin.networks.bitcoin;
+        const path = "m/44'/0'/0'/0/0";
 
-        resolve({ address, privateKey, publicKey, mnemonic: mnemonic });
+        // 복구키 임의로 생성 후 지갑 생성
+        if (mnemonic === undefined) {
+          const mnemonic = bip39.generateMnemonic();
+          const seed = bip39.mnemonicToSeedSync(mnemonic);
+          const root = bip32.fromSeed(seed);
+          const child = root.derivePath(path);
+          const p2pkh = bitcoin.payments.p2pkh({
+            pubkey: child.publicKey,
+            network: network,
+          }).address; // base58
+          const p2wpkh = bitcoin.payments.p2wpkh({
+            pubkey: child.publicKey,
+          }).address; // bech32
+          const p2sh = bitcoin.payments.p2sh({
+            redeem: bitcoin.payments.p2wpkh({ pubkey: child.publicKey }),
+          }).address; // base58
+          const publicKey = child.publicKey.toString("hex");
+          const privateKey = child.toWIF();
+
+          const result = {
+            address: { p2pkh, p2wpkh, p2sh },
+            privateKey: privateKey,
+            publicKey: publicKey,
+            mnemonic: mnemonic,
+          };
+
+          resolve(result);
+        }
+        // 전달 받은 복구키로 지갑 생성
+        else {
+          if (isValidMnemonic) {
+            const seed = bip39.mnemonicToSeedSync(mnemonic);
+            const root = bip32.fromSeed(seed);
+            const child = root.derivePath(path);
+            const p2pkh = bitcoin.payments.p2pkh({
+              pubkey: child.publicKey,
+              network: network,
+            }).address; // base58
+            const p2wpkh = bitcoin.payments.p2wpkh({
+              pubkey: child.publicKey,
+            }).address; // bech32
+            const p2sh = bitcoin.payments.p2sh({
+              redeem: bitcoin.payments.p2wpkh({ pubkey: child.publicKey }),
+            }).address; // base58
+            const publicKey = child.publicKey.toString("hex");
+            const privateKey = child.toWIF();
+
+            const result = {
+              address: { p2pkh, p2wpkh, p2sh },
+              privateKey: privateKey,
+              publicKey: publicKey,
+              mnemonic: mnemonic,
+            };
+
+            resolve(result);
+          } else {
+            return reject({ message: "Invalid mnemonic" });
+          }
+        }
+      }
+      // 비트코인 테스트넷
+      else if (chainId == "BTCTEST") {
+        const network = bitcoin.networks.testnet;
+        const path = "m/44'/1'/0'/0/0";
+
+        // 복구키 임의로 생성 후 지갑 생성
+        if (mnemonic === undefined) {
+          const mnemonic = bip39.generateMnemonic();
+          const seed = bip39.mnemonicToSeedSync(mnemonic);
+          const root = bip32.fromSeed(seed);
+          const child = root.derivePath(path);
+          const p2pkh = bitcoin.payments.p2pkh({
+            pubkey: child.publicKey,
+            network: network,
+          }).address; // base58
+          const p2wpkh = bitcoin.payments.p2wpkh({
+            pubkey: child.publicKey,
+          }).address; // bech32
+          const p2sh = bitcoin.payments.p2sh({
+            redeem: bitcoin.payments.p2wpkh({ pubkey: child.publicKey }),
+          }).address; // base58
+          const publicKey = child.publicKey.toString("hex");
+          const privateKey = child.toWIF();
+
+          const result = {
+            address: { p2pkh, p2wpkh, p2sh },
+            privateKey: privateKey,
+            publicKey: publicKey,
+            mnemonic: mnemonic,
+          };
+
+          resolve(result);
+        }
+        // 전달 받은 복구키로 지갑 생성
+        else {
+          const seed = bip39.mnemonicToSeedSync(mnemonic);
+          const root = bip32.fromSeed(seed);
+          const child = root.derivePath(path);
+          const p2pkh = bitcoin.payments.p2pkh({
+            pubkey: child.publicKey,
+            network: network,
+          }).address; // base58
+          const p2wpkh = bitcoin.payments.p2wpkh({
+            pubkey: child.publicKey,
+          }).address; // bech32
+          const p2sh = bitcoin.payments.p2sh({
+            redeem: bitcoin.payments.p2wpkh({ pubkey: child.publicKey }),
+          }).address; // base58
+          const publicKey = child.publicKey.toString("hex");
+          const privateKey = child.toWIF();
+
+          const result = {
+            address: { p2pkh, p2wpkh, p2sh },
+            privateKey: privateKey,
+            publicKey: publicKey,
+            mnemonic: mnemonic,
+          };
+
+          resolve(result);
+        }
+      }
+      // 라이트코인
+      else if (chainId == "LTC") {
+        const LITECOIN = {
+          messagePrefix: "\x19Litecoin Signed Message:\n",
+          bech32: "ltc",
+          bip32: {
+            public: 0x019da462,
+            private: 0x19d9cfe,
+          },
+          pubKeyHash: 0x30,
+          scriptHash: 0x32,
+          wif: 0xb0,
+        };
+        const path = "m/44'/0'/0'/0/0";
+
+        // 복구키 임의로 생성 후 지갑 생성
+        if (mnemonic === undefined) {
+          const mnemonic = bip39.generateMnemonic();
+          const seed = bip39.mnemonicToSeedSync(mnemonic);
+          const root = bip32.fromSeed(seed);
+          const child = root.derivePath(path);
+          const p2pkh = bitcoin.payments.p2pkh({
+            pubkey: child.publicKey,
+            network: LITECOIN,
+          }).address; // base58
+          const p2wpkh = bitcoin.payments.p2wpkh({
+            pubkey: child.publicKey,
+          }).address; // bech32
+          const p2sh = bitcoin.payments.p2sh({
+            redeem: bitcoin.payments.p2wpkh({ pubkey: child.publicKey }),
+          }).address; // base58
+          const publicKey = child.publicKey.toString("hex");
+          const privateKey = child.toWIF();
+
+          const result = {
+            address: { p2pkh, p2wpkh, p2sh },
+            privateKey: privateKey,
+            publicKey: publicKey,
+            mnemonic: mnemonic,
+          };
+
+          resolve(result);
+        }
+        // 전달 받은 복구키로 지갑 생성
+        else {
+          if (isValidMnemonic) {
+            const seed = bip39.mnemonicToSeedSync(mnemonic);
+            const root = bip32.fromSeed(seed, LITECOIN);
+            const child = root.derivePath(path);
+            const p2pkh = bitcoin.payments.p2pkh({
+              pubkey: child.publicKey,
+              network: LITECOIN,
+            }).address; // base58
+            const p2wpkh = bitcoin.payments.p2wpkh({
+              pubkey: child.publicKey,
+            }).address; // bech32
+            const p2sh = bitcoin.payments.p2sh({
+              redeem: bitcoin.payments.p2wpkh({ pubkey: child.publicKey }),
+            }).address; // base58
+            const publicKey = child.publicKey.toString("hex");
+            const privateKey = child.toWIF();
+
+            const result = {
+              address: { p2pkh, p2wpkh, p2sh },
+              privateKey: privateKey,
+              publicKey: publicKey,
+              mnemonic: mnemonic,
+            };
+
+            resolve(result);
+          }
+        }
       } else {
-        const seed = bip39.mnemonicToSeedSync(mnemonic);
-        const root = bip32.fromSeed(seed, network);
-        const account = root.derivePath(`m/49'/0'/0'/0'`);
-        const node = account.derive(0).derive(0);
-        const { address } = bitcoin.payments.p2pkh({
-          pubkey: node.publicKey,
-          network: network,
-        });
-        const publicKey = node.publicKey.toString("hex");
-        const privateKey = node.toWIF();
-
-        resolve({ address, privateKey, publicKey, seedPhrase: mnemonic });
+        return reject({ message: "Not supported chainId" });
       }
     } catch (error) {
       logger.error(error.message);
@@ -47,13 +220,5 @@ const createWallet = async (mnemonic) => {
     }
   });
 };
-
-// const privateKeyToKeyPair = (privateKey) => {
-//   const keypair = ECPair.fromWIF(privateKey);
-//   const { address } = bitcoin.payments.p2pkh({ pubkey: keypair.publicKey });
-//   console.log(address);
-// };
-
-// privateKeyToKeyPair(privateKey);
 
 module.exports = createWallet;
