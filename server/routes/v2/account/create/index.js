@@ -3,7 +3,7 @@ const crypto = require("crypto");
 
 const { logger } = require("../../../../utils/winston");
 
-const createWallet = require("../../../../service/wallet");
+const createWallet = require("../../../../service/wallet/ethereum/create");
 
 const baobab = require("../../../../blockchain/klaytn/testnet");
 

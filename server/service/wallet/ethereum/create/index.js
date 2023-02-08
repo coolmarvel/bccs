@@ -1,7 +1,7 @@
 const Mnemonic = require("eth-lightwallet/node_modules/bitcore-mnemonic");
 const lightWallet = require("eth-lightwallet");
 
-const { logger } = require("../../utils/winston");
+const { logger } = require("../../../../utils/winston");
 
 const { PASSWORD } = process.env;
 

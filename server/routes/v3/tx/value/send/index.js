@@ -22,7 +22,6 @@ router.post("/", async (req, res) => {
       pubkey: keypair.publicKey,
     });
     const wallet = { address: address, privateKey: privateKey };
-
     res.send({ message: true });
   } catch (error) {
     logger.error(error.message);
