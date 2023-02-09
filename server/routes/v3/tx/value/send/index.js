@@ -11,18 +11,24 @@ const bip32 = BIP32Factory(ecc);
 const bip39 = require("bip39");
 const bip65 = require("bip65");
 
-const regtestUtils = require("../../../../../service/regTest");
+const axios = require("axios");
 
 router.post("/", async (req, res) => {
   try {
-    const { privateKey } = req.body;
+    const { address, amount, username, password } = req.body;
 
-    const keypair = ECPair.fromWIF(privateKey);
-    const { address } = bitcoin.payments.p2pkh({
-      pubkey: keypair.publicKey,
+    const body = {
+      jsonrpc: "1.0",
+      method: "sendtoaddress",
+      id: "curltext",
+      parameter: [address, amount, "donation", "seans outpost"],
+    };
+
+    const result = await axios.post("http://127.0.0.1:18443/", body, {
+      auth: { username: username, password: password },
     });
-    const wallet = { address: address, privateKey: privateKey };
-    res.send({ message: true });
+
+    res.send({ message: result.data.result });
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });

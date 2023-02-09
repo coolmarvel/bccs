@@ -3,32 +3,29 @@ const axios = require("axios");
 
 const { logger } = require("../../../../../utils/winston");
 
-const isValidChainId = require("../../../../../service/chainId");
-
-router.get("/", async (req, res) => {
+router.get("/utxos", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    await isValidChainId(req);
+    const { index, username, password } = req.body;
 
     const body = {
       jsonrpc: "1.0",
-      method: "getbalance",
+      method: "listunspent",
       id: "curltext",
-      parameter: [],
+      parameter: [index],
     };
 
-    const balance = await axios
-      .post("http://127.0.0.1:18443/wallet//Users/security/Desktop/bitcoin/wallet/", body, {
+    const uxtos = await axios
+      .post("http://127.0.0.1:18443/", body, {
         auth: { username: username, password: password },
       })
       .then((response) => {
         return response.data.result;
       });
 
-    res.send({ balance });
+    res.send({ uxtos });
   } catch (error) {
     logger.error(error.message);
-    res.status(404).send({ message: error.message });
+    res.send({ message: error.message });
   }
 });
 
