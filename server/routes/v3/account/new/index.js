@@ -11,13 +11,12 @@ router.post("/new", async (req, res) => {
       jsonrpc: "1.0",
       method: "createwallet",
       id: "curltext",
-      parameter: [],
+      parameter: ["/Users/security/Desktop/bitcoin/wallet/test"],
     };
 
     const uxtos = await axios
       .post("http://127.0.0.1:18443/", body, {
         auth: { username: username, password: password },
-        params: { wallet_name: "/Users/security/Desktop/bitcoin/wallet/test1" },
       })
       .then((response) => {
         return response.data.result;
@@ -26,7 +25,7 @@ router.post("/new", async (req, res) => {
     res.send({ uxtos });
   } catch (error) {
     logger.error(error.message);
-    res.send({ message: error });
+    res.send({ message: error.message });
   }
 });
 

@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
     };
 
     const balance = await axios
-      .post("http://127.0.0.1:18443/wallet//Users/security/Desktop/bitcoin/wallet/", body, {
+      .post("http://127.0.0.1:18443/", body, {
         auth: { username: username, password: password },
       })
       .then((response) => {

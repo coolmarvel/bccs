@@ -11,6 +11,7 @@ const chainIdList = [
   "LTC",
   "BTC",
   "BTCTEST",
+  "REGTEST",
 ];
 
 module.exports = chainIdList;
