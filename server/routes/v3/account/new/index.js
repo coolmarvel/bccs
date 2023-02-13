@@ -11,7 +11,7 @@ router.post("/new", async (req, res) => {
       jsonrpc: "1.0",
       method: "createwallet",
       id: "curltext",
-      parameter: ["/Users/security/Desktop/bitcoin/wallet/test"],
+      params: ["/Users/security/Desktop/bitcoin/wallet/test"],
     };
 
     const uxtos = await axios

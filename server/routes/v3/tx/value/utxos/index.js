@@ -11,10 +11,10 @@ router.get("/utxos", async (req, res) => {
       jsonrpc: "1.0",
       method: "listunspent",
       id: "curltext",
-      parameter: [index],
+      params: [], // min confirmations, max confirmations [6, 99999]
     };
 
-    const uxtos = await axios
+    const utxos = await axios
       .post("http://127.0.0.1:18443/", body, {
         auth: { username: username, password: password },
       })
@@ -22,7 +22,7 @@ router.get("/utxos", async (req, res) => {
         return response.data.result;
       });
 
-    res.send({ uxtos });
+    res.send({ utxos });
   } catch (error) {
     logger.error(error.message);
     res.send({ message: error.message });
