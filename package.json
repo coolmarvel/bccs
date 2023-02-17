@@ -8,6 +8,7 @@
     "@openzeppelin/contracts": "^4.8.1",
     "@truffle/hdwallet-provider": "^2.1.5",
     "dotenv": "^16.0.3",
+    "ethers": "^6.0.4",
     "truffle-hdwallet-provider-klaytn": "^1.4.2"
   }
 }

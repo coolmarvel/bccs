@@ -27,7 +27,7 @@ router.post("/", async (req, res) => {
     // approve transaction
     // const approveData = tokenInstance.methods.approve(
     //   exchangeAddress,
-    //   ganache.utils.toWei("200")
+    //   ganache.utils.toWei("2", "ether")
     // );
     // const approveABI = approveData.encodeABI();
     // const signedApproveTx = await ganache.eth.accounts.signTransaction(
@@ -37,16 +37,15 @@ router.post("/", async (req, res) => {
     //     gas: 2000000,
     //     data: approveABI,
     //   },
-    //   privateKey
+    //   accounts.privateKey
     // );
-    // console.log("signedApproveTx", signedApproveTx);
-    // const approveReceipt = await ganache.eth
+    // await ganache.eth
     //   .sendSignedTransaction(signedApproveTx.rawTransaction)
-    //   .on("approveReceipt", console.log);
+    //   .on("receipt", console.log);
 
     // addLiquidity transaction
     // const addLiquidityData = exchangeInstance.methods.addLiquidity(
-    //   ganache.utils.toWei("200")
+    //   ganache.utils.toWei("2", "ether")
     // );
     // const addLiquidityABI = addLiquidityData.encodeABI();
     // const signedAddLiquidityTx = await ganache.eth.accounts.signTransaction(
@@ -57,19 +56,65 @@ router.post("/", async (req, res) => {
     //     data: addLiquidityABI,
     //     value: ganache.utils.toWei("1", "ether"),
     //   },
-    //   privateKey
+    //   accounts.privateKey
     // );
-    // const addLiquidityReceipt = await ganache.eth
+    // await ganache.eth
     //   .sendSignedTransaction(signedAddLiquidityTx.rawTransaction)
-    //   .on("approveReceipt", console.log);
+    //   .on("receipt", console.log);
 
-    const exchangeBalance = await ganache.eth.getBalance(exchangeAddress);
-    const getReserve = await exchangeInstance.methods.getReserve().call();
-    const ownerBalance = await tokenInstance.methods
-      .balanceOf(accounts.address)
-      .call();
+    // const exchangeBalance = ganache.utils.fromWei(
+    //   await ganache.eth.getBalance(exchangeAddress)
+    // );
+    // const getReserve = ganache.utils.fromWei(
+    //   await exchangeInstance.methods.getReserve().call()
+    // );
+    // const ownerBalance = await tokenInstance.methods
+    //   .balanceOf(accounts.address)
+    //   .call();
+    // const tokensOut = ganache.utils.fromWei(
+    //   await exchangeInstance.methods
+    //     .getTokenAmount(ganache.utils.toWei("1", "ether"))
+    //     .call()
+    // );
+    // const ethOut = ganache.utils.fromWei(
+    //   await exchangeInstance.methods
+    //     .getEthAmount(ganache.utils.toWei("2", "ether"))
+    //     .call()
+    // );
+    // console.log(exchangeBalance);
+    // console.log(getReserve);
+    // console.log(ownerBalance);
+    // console.log(tokensOut);
+    // console.log(ethOut);
 
-    res.send({ ownerBalance, exchangeBalance, getReserve });
+    // token to eth swap transaction
+    // const tokenToEthSwapData = exchangeInstance.methods.tokenToEthSwap(
+    //   ganache.utils.toWei("2", "ether"),
+    //   ganache.utils.toWei("0.9", "ether")
+    // );
+    // const tokenToEthSwapABI = tokenToEthSwapData.encodeABI();
+    // const signedTokenToEthSwap = await ganache.eth.accounts.signTransaction(
+    //   {
+    //     from: accounts.address,
+    //     to: exchangeAddress,
+    //     gas: 2000000,
+    //     data: tokenToEthSwapABI,
+    //     value: ganache.utils.toWei("1", "ether"),
+    //   },
+    //   accounts.privateKey
+    // );
+    // const tokenToEthSwapReceipt = await ganache.eth
+    //   .sendSignedTransaction(signedTokenToEthSwap.rawTransaction)
+    //   .on("receipt", console.log);
+
+    // res.send({
+    //   ownerBalance,
+    //   exchangeBalance,
+    //   getReserve,
+    //   tokensOut,
+    //   ethOut,
+    //   tokenToEthSwapReceipt,
+    // });
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });
