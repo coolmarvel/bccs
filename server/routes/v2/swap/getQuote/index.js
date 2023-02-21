@@ -4,7 +4,7 @@ const { logger } = require("../../../../utils/winston");
 
 const getQuote = require("../../../../service/swap/getQuote");
 
-router.post("/quote", async (req, res) => {
+router.get("/quote", async (req, res) => {
   try {
     const { from, to, value } = req.body;
     const quote = await getQuote(from, to, value);

@@ -5,10 +5,14 @@ const { logger } = require("../../../utils/winston");
 
 const erc20ABI = require("../erc20ABI");
 
-const swapTX = async (from, to, quote, privateKey) => {
+const swapTX = async (from, quote, privateKey) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const web3 = new Web3(Web3.givenProvider);
+      const web3 = new Web3(
+        new Web3.providers.HttpProvider(
+          "https://polygon-testnet-rpc.allthatnode.com:8545"
+        )
+      );
       const accounts = await web3.eth.accounts.wallet.add(privateKey);
       const address = accounts.address;
       const fromAddress = from.address;
@@ -16,11 +20,11 @@ const swapTX = async (from, to, quote, privateKey) => {
       logger.info("approval amount: " + maxApproval);
 
       const erc20TokenContract = new web3.eth.Contract(erc20ABI, fromAddress);
-      logger.info("setup ERC20TokenContract: ", +erc20TokenContract);
+      logger.info("setup ERC20TokenContract: " + erc20TokenContract);
 
       const approveReceipt = await erc20TokenContract.methods
         .approve(quote.allowanceTarget, maxApproval)
-        .send({ from: address })
+        .send({ from: address, gas: 3000000 })
         .then((response) => {
           logger.info("approveReceipt: " + response);
         });

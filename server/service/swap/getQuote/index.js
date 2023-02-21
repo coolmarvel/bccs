@@ -15,14 +15,13 @@ const getQuote = async (from, to, value) => {
         sellToken: from.address,
         buyToken: to.address,
         sellAmount: amount,
+        takerAddress: "",
       };
-      let result = await axios
+      const result = await axios
         .get(`https://api.0x.org/swap/v1/quote?${qs.stringify(params)}`)
         .then((response) => {
           return response.data;
         });
-      result.buyAmount = result.buyAmount / 10 ** to.decimals;
-      result.estimatedGas = result.estimatedGas;
 
       resolve(result);
     } catch (error) {

@@ -4,7 +4,7 @@ const { logger } = require("../../../../utils/winston");
 
 const getPrice = require("../../../../service/swap/getPrice");
 
-router.post("/price", async (req, res) => {
+router.get("/price", async (req, res) => {
   try {
     const { from, to, value } = req.body;
 

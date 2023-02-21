@@ -16,13 +16,15 @@ const getPrice = async (from, to, value) => {
         buyToken: to.address,
         sellAmount: amount,
       };
-      let result = await axios
+      const result = await axios
         .get(`https://api.0x.org/swap/v1/price?${qs.stringify(params)}`)
         .then((response) => {
-          return response.data;
+          const result = {
+            buyAmount: response.data.buyAmount / 10 ** to.decimals,
+            estimatedGas: response.data.estimatedGas,
+          };
+          return result;
         });
-      result.buyAmount = result.buyAmount / 10 ** to.decimals;
-      result.estimatedGas = result.estimatedGas;
 
       resolve(result);
     } catch (error) {
