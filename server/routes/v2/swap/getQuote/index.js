@@ -6,9 +6,9 @@ const getQuote = require("../../../../service/swap/getQuote");
 
 router.get("/quote", async (req, res) => {
   try {
-    const { from, to, value } = req.body;
-    const quote = await getQuote(from, to, value);
+    const { from, to, address, value } = req.body;
 
+    const quote = await getQuote(from, to, value, address);
     res.send(quote);
   } catch (error) {
     logger.error(error.message);

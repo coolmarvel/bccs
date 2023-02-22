@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@openzeppelin/wizard": "^0.2.0",
     "@uniswap/sdk": "3.0.0",
     "@uniswap/sdk-core": "^3.1.1",
     "@uniswap/v2-periphery": "^1.1.0-beta.0",

@@ -7,12 +7,12 @@ const getQuote = require("../../../../service/swap/getQuote");
 
 router.post("/tx", async (req, res) => {
   try {
-    const { from, to, value, privateKey } = req.body;
+    const { from, to, value, address, privateKey } = req.body;
 
-    const result = await getQuote(from, to, value);
+    const result = await getQuote(from, to, value, address);
     const receipt = await swapTX(from, result, privateKey);
 
-    res.send({ message: true });
+    res.send(receipt);
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });
