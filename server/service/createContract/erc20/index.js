@@ -10,7 +10,7 @@ const createERC20 = async (params) => {
       ercDefault.votes = params.votes; // boolean
       ercDefault.symbol = params.symbol; // string
       ercDefault.permit = params.permit; // boolean
-      ercDefault.premint = params.premint; // string
+      ercDefault.premint = params.premint; // stringstr
       ercDefault.mintable = params.mintable; // boolean
       ercDefault.pausable = params.pausable; // boolean
       ercDefault.burnable = params.burnable; // boolean
