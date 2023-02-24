@@ -8,8 +8,6 @@ router.post("/create", async (req, res) => {
   try {
     const { mnemonic } = req.body;
 
-    await createWallet(mnemonic);
-
     res.send({ message: true });
   } catch (error) {
     logger.error(error.message);

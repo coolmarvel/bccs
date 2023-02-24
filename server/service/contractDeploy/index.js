@@ -4,9 +4,11 @@ const { logger } = require("../../utils/winston");
 const kip7jsoninterface = require("../../utils/data/kip7/abi");
 const kip7bytecode = require("../../utils/data/kip7/bytecode");
 
-const contractDeploy = (name, symbol) => {
+const contractDeploy = (name, symbol, privateKey) => {
   return new Promise(async (resolve, reject) => {
     try {
+      await baobab.klay.accounts.wallet.add(privateKey);
+
       const jsonInterface = kip7jsoninterface;
       const hexstring = kip7bytecode;
 
@@ -17,13 +19,19 @@ const contractDeploy = (name, symbol) => {
         symbol
       );
 
-      const receipt = await baobab.transaction.smartContractDeploy.create({
+      const contract = await baobab.transaction.smartContractDeploy.create({
         from: "0xadc565Bb88aA72aa14b98Cb6196f216900614b3c",
         input: abi,
         gas: 300000,
       });
 
-      resolve({ abi, receipt });
+      await baobab.klay
+        .sendTransaction(contract)
+        .on("receipt", function (receipt) {
+          console.log(first);
+        });
+
+      resolve(true);
     } catch (error) {
       logger.error(error.message);
       return reject(error);

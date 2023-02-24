@@ -16,21 +16,11 @@ router.post("/", async (req, res) => {
     const { address, privateKey, name, symbol, decimals, initialSupply } =
       req.body;
 
-    const chainId = await isValidChainId(req);
+    await isValidChainId(req);
     await isValidAddress(address);
     await isValidPrivateKey(privateKey);
 
-    // const result = await deployKip7Baobab(
-    //   address,
-    //   privateKey,
-    //   name,
-    //   symbol,
-    //   decimals,
-    //   initialSupply
-    // );
-
-    // res.send({ result });
-    const { abi, receipt } = await contractDeploy(name, symbol);
+    const { abi, receipt } = await contractDeploy(name, symbol, privateKey);
     res.send({ abi, receipt });
   } catch (error) {
     logger.error(error.message);

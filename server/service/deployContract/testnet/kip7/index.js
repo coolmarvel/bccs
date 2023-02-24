@@ -12,28 +12,9 @@ const deployKip7Baobab = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const isExisted = await baobab.wallet.isExisted(address);
+      await baobab.klay.accounts.wallet.add(privateKey);
 
-      if (!isExisted) {
-        const keyring = await baobab.wallet.keyring.create(address, privateKey);
-        await baobab.wallet.add(keyring);
-
-        const result = await baobab.kct.kip7.deploy(
-          {
-            name: name,
-            symbol: symbol,
-            decimals: decimals,
-            initialSupply: initialSupply,
-          },
-          address
-        );
-
-        await baobab.wallet.remove(address);
-
-        resolve(result);
-      } else if (isExisted) {
-        resolve(true);
-      }
+      resolve(true);
     } catch (error) {
       logger.error(error.message);
       return reject(error);
