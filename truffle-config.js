@@ -17,7 +17,7 @@ const KlaytnWalletProvider = require("truffle-hdwallet-provider-klaytn");
 
 module.exports = {
   contracts_directory: "./contracts",
-  contracts_build_directory: "./build/test/contracts",
+  contracts_build_directory: "./build/sepolia/contracts",
 
   networks: {
     // 가나슈

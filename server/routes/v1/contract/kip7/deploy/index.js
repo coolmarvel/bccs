@@ -20,8 +20,8 @@ router.post("/", async (req, res) => {
     await isValidAddress(address);
     await isValidPrivateKey(privateKey);
 
-    const { abi, receipt } = await contractDeploy(name, symbol, privateKey);
-    res.send({ abi, receipt });
+    const receipt = await contractDeploy(name, symbol, privateKey);
+    res.send(receipt);
   } catch (error) {
     logger.error(error.message);
     res.send({ message: error.message });
