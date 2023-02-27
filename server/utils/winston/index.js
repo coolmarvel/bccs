@@ -1,3 +1,4 @@
+const util = require("util");
 const winston = require("winston");
 const { format } = require("winston");
 const moment = require("moment-timezone");
@@ -6,7 +7,14 @@ const winstonDaily = require("winston-daily-rotate-file");
 const { combine, printf } = format;
 
 const customFormat = printf((message) => {
-  return `${message.timestamp} [${message.level}]: ${message.message}`;
+  return util
+    .format("%o", message.message)
+    .trim()
+    .split("\n")
+    .map((line) => {
+      return `${message.timestamp} [${message.level}]: ${line}`;
+    })
+    .join("\n");
 });
 
 const appendTimestamp = winston.format((info, opts) => {

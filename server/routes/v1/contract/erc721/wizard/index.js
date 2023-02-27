@@ -4,7 +4,7 @@ const { logger } = require("../../../../../utils/winston");
 
 const createERC721 = require("../../../../../service/createContract/erc721");
 
-router.post("/erc721", async (req, res) => {
+router.post("/wizard", async (req, res) => {
   try {
     const contract = await createERC721(req.body);
 

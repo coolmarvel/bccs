@@ -2,11 +2,11 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../../utils/winston");
 
-const createERC20 = require("../../../../../service/createContract/erc20");
+const createERC1155 = require("../../../../../service/createContract/erc1155");
 
-router.post("/erc20", async (req, res) => {
+router.post("/wizard", async (req, res) => {
   try {
-    const contract = await createERC20(req.body);
+    const contract = await createERC1155(req.body);
 
     res.send(contract);
   } catch (error) {

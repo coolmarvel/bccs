@@ -1,13 +1,11 @@
 const router = require("express").Router();
 
-const kip7Router = require("./kip7");
-const kip17Router = require("./kip17");
-const kip37Router = require("./kip37");
-const wizardRotuer = require("./wizard");
+const erc20Router = require("./erc20");
+const erc721Router = require("./erc721");
+const erc1155Router = require("./erc1155");
 
-router.use("/ft", kip7Router);
-router.use("/mt", kip37Router);
-router.use("/nft", kip17Router);
-router.use("/wizard", wizardRotuer);
+router.use("/ft", erc20Router);
+router.use("/nft", erc721Router);
+router.use("/mt", erc1155Router);
 
 module.exports = router;
