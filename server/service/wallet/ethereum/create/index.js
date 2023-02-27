@@ -1,4 +1,5 @@
 const Mnemonic = require("eth-lightwallet/node_modules/bitcore-mnemonic");
+// const Mnemonic = require("bitcore-mnemonic");
 const lightWallet = require("eth-lightwallet");
 
 const { logger } = require("../../../../utils/winston");

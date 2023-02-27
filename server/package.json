@@ -24,7 +24,7 @@
     "bitcoin-address-generator": "^1.0.2",
     "bitcoin-core": "^4.1.0",
     "bitcoinjs-lib": "5.2.0",
-    "bitcore-lib": "^8.25.40",
+    "bitcore-lib": "^10.0.0",
     "body-parser": "^1.20.1",
     "caver-js": "^1.10.1",
     "cookie-parser": "^1.4.6",
