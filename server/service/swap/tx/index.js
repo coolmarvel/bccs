@@ -16,7 +16,7 @@ const swapTX = async (from, quote, privateKey) => {
       const erc20TokenContract = new web3.eth.Contract(erc20ABI, fromAddress);
       const approveReceipt = await erc20TokenContract.methods
         .approve(quote.allowanceTarget, maxApproval)
-        .send({ from: address, gas: 3000000 });
+        .send({ from: address, gas: 10000000 });
       const swapReceipt = await web3.eth
         .sendTransaction(quote)
         .on("transactionHash", console.log)

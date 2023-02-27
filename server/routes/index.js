@@ -1,9 +1,17 @@
 const router = require("express").Router();
 
 const { logger } = require("../utils/winston");
+const rpcUrl = require("../utils/rpc/rpcUrl");
+const updateStatusOff = require("../utils/rpc/off");
 
-router.get("/", (req, res) => {
+const isValidChainId = require("../service/chainId");
+
+router.get("/", async (req, res) => {
   try {
+    const chainId = await isValidChainId(req);
+    // const url = await rpcUrl(chainId);
+    await updateStatusOff(chainId);
+
     res.send({ message: "server-client connected" });
   } catch (error) {
     logger.error(error.message);
