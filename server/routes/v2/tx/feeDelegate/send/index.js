@@ -5,8 +5,7 @@ const { logger } = require("../../../../../utils/winston");
 const isValidChainId = require("../../../../../service/chainId");
 const isValidAddress = require("../../../../../service/checksum/address");
 const isValidPrivateKey = require("../../../../../service/checksum/privateKey");
-const feeDelegateBaobabKlayTransfer = require("../../../../../service/feeDelegateTx/testnet/valueTransfer");
-const feeDelegateCypressKlayTransfer = require("../../../../../service/feeDelegateTx/mainnet/valueTransfer");
+const feeDelegateValueTransfer = require("../../../../../service/valueTransfer/feeDelegate");
 
 router.post("/", async (req, res) => {
   try {
@@ -26,35 +25,30 @@ router.post("/", async (req, res) => {
     await isValidPrivateKey(fromPrivateKey);
     await isValidPrivateKey(feePayPrivateKey);
 
-    // 테스트넷 클레이 대납 전송
-    if (chainId == "1001") {
-      const receipt = await feeDelegateBaobabKlayTransfer(
-        fromAddress,
-        fromPrivateKey,
-        toAddress,
-        feePayAddress,
-        feePayPrivateKey,
-        value
-      );
-
-      res.send({ receipt });
-    }
-    // 메인넷 클레이 대납 전송
-    else if (chainId == "8217") {
-      const receipt = await feeDelegateCypressKlayTransfer(
-        fromAddress,
-        fromPrivateKey,
-        toAddress,
-        feePayAddress,
-        feePayPrivateKey,
-        value
-      );
-
-      res.send({ receipt });
-    }
+    const receipt = await feeDelegateValueTransfer(
+      chainId,
+      fromAddress,
+      fromPrivateKey,
+      toAddress,
+      feePayAddress,
+      feePayPrivateKey,
+      value
+    );
+    res.send({ receipt });
   } catch (error) {
     logger.error(error.message);
-    res.send({ message: error.message });
+    if (error.message.includes("chainId required")) {
+      res.status(412).send({ message: error.message });
+    } else if (
+      error.message.includes("Invalid address") ||
+      error.message.includes("Invalid privateKey")
+    ) {
+      res.status(400).send({ message: error.message });
+    } else if (error.message.includes("Unsupported chainId")) {
+      res.status(416).send({ message: error.message });
+    } else {
+      res.status(404).send({ message: error.message });
+    }
   }
 });
 
