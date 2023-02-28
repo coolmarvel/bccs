@@ -1,39 +1,41 @@
 const router = require("express").Router();
 
-const baobab = require("../../../../../blockchain/klaytn/testnet");
-const provider = require("../../../../../blockchain/klaytn/mainnet");
-
 const { logger } = require("../../../../../utils/winston");
-const { hexToDecimal } = require("../../../../../utils/converter");
 
 const isValidChainId = require("../../../../../service/chainId");
+const isValidAddress = require("../../../../../service/checksum/address");
+const isValidPrivateKey = require("../../../../../service/checksum/privateKey");
+const feeDelegateEstimateGas = require("../../../../../service/estimateGas/valueTransfer/feeDelegate");
 
-router.get("/estimate", async (req, res) => {
+router.post("/estimate", async (req, res) => {
   try {
+    const {
+      value,
+      toAddress,
+      fromAddress,
+      fromPrivateKey,
+      feePayAddress,
+      feePayPrivateKey,
+    } = req.body;
+
     const chainId = await isValidChainId(req);
+    await isValidAddress(toAddress);
+    await isValidAddress(fromAddress);
+    await isValidAddress(feePayAddress);
+    await isValidPrivateKey(fromPrivateKey);
+    await isValidPrivateKey(feePayPrivateKey);
 
-    // 테스트넷 클레이 전송 예상 가스비
-    if (chainId == "1001") {
-      const gasPrice =
-        hexToDecimal(await baobab.rpc.klay.getGasPrice()) / 1000000000;
-      // 25;
-      const gasUsed = 31000;
-      const txFee = (gasPrice * gasUsed) / 1000000000;
+    const result = await feeDelegateEstimateGas(
+      chainId,
+      fromAddress,
+      fromPrivateKey,
+      toAddress,
+      feePayAddress,
+      feePayPrivateKey,
+      value
+    );
 
-      res.send({ gasPrice, gasUsed, txFee });
-    }
-    // 메인넷 클레이 전송 예상 가스비
-    else if (chainId == "8217") {
-      const cypress = await provider();
-
-      const gasPrice =
-        hexToDecimal(await cypress.rpc.klay.getGasPrice()) / 1000000000;
-      // 25;
-      const gasUsed = 31000;
-      const txFee = (gasPrice * gasUsed) / 1000000000;
-
-      res.send({ gasPrice, gasUsed, txFee });
-    }
+    res.send(result);
   } catch (error) {
     logger.error(error.message);
     if (error.message.includes("chainId required")) {

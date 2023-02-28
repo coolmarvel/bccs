@@ -20,6 +20,7 @@ const estimateGas = (
         const rawTx = (
           await caver.klay.accounts.signTransaction(
             {
+              type: "VALUE_TRANSFER",
               from: fromAddress,
               to: toAddress,
               gas: 3000000,
