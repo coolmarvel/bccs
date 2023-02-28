@@ -21,7 +21,9 @@ router.get("/", async (req, res) => {
     if (error.message.includes("Invalid address")) {
       res.status(400).send({ message: error.message });
     } else if (error.message.includes("chainId required")) {
-      res.status(403).send({ message: error.message });
+      res.status(412).send({ message: error.message });
+    } else if (error.message.includes("Unsupported chainId")) {
+      res.status(416).send({ message: error.message });
     } else {
       res.status(404).send({ message: error.message });
     }

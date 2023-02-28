@@ -1,8 +1,8 @@
-const getWeb3 = require("../getWeb3");
-const getCaver = require("../getCaver");
+const getWeb3 = require("../../getWeb3");
+const getCaver = require("../../getCaver");
 
-const { logger } = require("../../utils/winston");
-const { hexToDecimal } = require("../../utils/converter");
+const { logger } = require("../../../utils/winston");
+const { hexToDecimal } = require("../../../utils/converter");
 
 const estimateGas = (
   chainId,
