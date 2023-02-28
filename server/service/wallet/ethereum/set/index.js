@@ -1,16 +1,16 @@
-const baobab = require("../../../../blockchain/klaytn/testnet");
-
 const { logger } = require("../../../../utils/winston");
 
+const getCaver = require("../../../getCaver");
 const isValidPrivateKey = require("../../../checksum/privateKey");
 
 const setWallet = (privateKey, keystore, password) => {
   return new Promise(async (resolve, reject) => {
     try {
+      const caver = await getCaver("1001");
+      // 비밀키로 지갑등록할 때
       if (privateKey && keystore === undefined && password === undefined) {
-        console.log("up");
         const publicKey = await isValidPrivateKey(privateKey);
-        const account = await baobab.klay.accounts.privateKeyToAccount(
+        const account = await caver.klay.accounts.privateKeyToAccount(
           privateKey
         );
         const address = account.address;
@@ -21,9 +21,10 @@ const setWallet = (privateKey, keystore, password) => {
           publicKey: publicKey,
         };
         resolve(result);
-      } else if (keystore && password && privateKey === undefined) {
-        console.log("down");
-        const account = await baobab.klay.accounts.decrypt(keystore, password);
+      } 
+      // 키스토어 및 비밀번호로 지갑등록할 때
+      else if (keystore && password && privateKey === undefined) {
+        const account = await caver.klay.accounts.decrypt(keystore, password);
         const address = account.address;
         const private = account.privateKey;
         const publicKey = await isValidPrivateKey(private);

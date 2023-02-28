@@ -1,101 +1,107 @@
-const Mnemonic = require("eth-lightwallet/node_modules/bitcore-mnemonic");
-// const Mnemonic = require("bitcore-mnemonic");
-const lightWallet = require("eth-lightwallet");
+const { hdkey } = require("ethereumjs-wallet");
+const crypto = require("crypto");
+const { v4 } = require("uuid");
+const bip39 = require("bip39");
+
+const getCaver = require("../../../getCaver");
 
 const { logger } = require("../../../../utils/winston");
 
-const { PASSWORD } = process.env;
-
 const createWallet = (mnemonic, password) => {
-  try {
-    const entropy = new Mnemonic(Mnemonic.Words.ENGLISH);
-    const seedPhrase = entropy.toString();
+  return new Promise(async (resolve, reject) => {
+    try {
+      const caver = await getCaver("1001");
 
-    return new Promise((resolve, reject) => {
-      // mnemonic, password 둘 다 없을 때
-      if (mnemonic === undefined && password === undefined) {
-        password = PASSWORD;
-        lightWallet.keystore.createVault(
-          { password, seedPhrase, hdPathString: "m/44'/60'/0'/0" },
-          (err, ks) => {
-            if (err) {
-              return reject(err);
-            }
+      const uuid = v4();
+      const sha256_hex = crypto.createHash("sha256").update(uuid).digest("hex");
 
-            ks.keyFromPassword(password, (err, pwDerivedKey) => {
-              if (err) {
-                return reject(err);
-              }
+      // 니모닉 없을 때 (니모닉 및 비밀번호 임의 생성)
+      if (mnemonic === undefined) {
+        const mnemonic = bip39.generateMnemonic();
+        const seed = await bip39.mnemonicToSeed(mnemonic);
+        const root = hdkey.fromMasterSeed(seed);
+        const wallet = root.derivePath("m/44'/60'/0'/0/0").getWallet();
 
-              ks.generateNewAddress(pwDerivedKey);
-              const addresses = ks.getAddresses();
-              const address = addresses[0];
-              const privateKey = ks.exportPrivateKey(address, pwDerivedKey);
-
-              resolve({ address, privateKey, seedPhrase });
-            });
-          }
+        const address = wallet.getAddressString();
+        const privateKey = wallet.getPrivateKeyString();
+        const publicKey = await caver.klay.accounts.privateKeyToPublicKey(
+          privateKey
         );
-      } else {
-        // mnemonic, password 둘 다 있을 때
-        if (mnemonic && password) {
-          lightWallet.keystore.createVault(
-            { password, seedPhrase: mnemonic, hdPathString: "m/44'/60'/0'/0" },
-            (err, ks) => {
-              if (err) {
-                return reject(err);
-              }
+        const keystore = await caver.klay.accounts.encryptV3(
+          privateKey,
+          sha256_hex
+        );
 
-              ks.keyFromPassword(password, (err, pwDerivedKey) => {
-                if (err) {
-                  return reject(err);
-                }
+        const result = {
+          address: address,
+          privateKey: privateKey,
+          publicKey: publicKey,
+          seedPhrase: mnemonic,
+          pwd: sha256_hex,
+          keystore: keystore,
+        };
 
-                ks.generateNewAddress(pwDerivedKey);
-                const addresses = ks.getAddresses();
-                const address = addresses[0];
-                const privateKey = ks.exportPrivateKey(address, pwDerivedKey);
-
-                resolve({ address, privateKey, seedPhrase: mnemonic });
-              });
-            }
-          );
-        }
-        // menmonic은 있고 password가 없을 때
-        else if (mnemonic && password === undefined) {
-          password = PASSWORD;
-          lightWallet.keystore.createVault(
-            {
-              password,
-              seedPhrase: mnemonic,
-              hdPathString: "m/44'/60'/0'/0",
-            },
-            (err, ks) => {
-              if (err) {
-                return reject(err);
-              }
-
-              ks.keyFromPassword(password, (err, pwDerivedKey) => {
-                if (err) {
-                  return reject(err);
-                }
-
-                ks.generateNewAddress(pwDerivedKey);
-                const addresses = ks.getAddresses();
-                const address = addresses[0];
-                const privateKey = ks.exportPrivateKey(address, pwDerivedKey);
-
-                resolve({ address, privateKey, seedPhrase: mnemonic });
-              });
-            }
-          );
-        }
+        resolve(result);
       }
-    });
-  } catch (error) {
-    logger.error(error.message);
-    return reject(error);
-  }
+      // 니모닉 있고 비밀번호 없을 때 (비밀번호 임의 생성)
+      else if (mnemonic && password === undefined) {
+        const seed = await bip39.mnemonicToSeed(mnemonic);
+        const root = hdkey.fromMasterSeed(seed);
+        const wallet = root.derivePath("m/44'/60'/0'/0/0").getWallet();
+
+        const address = wallet.getAddressString();
+        const privateKey = wallet.getPrivateKeyString();
+        const publicKey = await caver.klay.accounts.privateKeyToPublicKey(
+          privateKey
+        );
+        const keystore = await caver.klay.accounts.encryptV3(
+          privateKey,
+          sha256_hex
+        );
+
+        const result = {
+          address: address,
+          privateKey: privateKey,
+          publicKey: publicKey,
+          seedPhrase: mnemonic,
+          pwd: sha256_hex,
+          keystore: keystore,
+        };
+
+        resolve(result);
+      }
+      // 니모닉 및 비밀번호 둘 다 있을 때
+      else if (mnemonic && password) {
+        const seed = await bip39.mnemonicToSeed(mnemonic);
+        const root = hdkey.fromMasterSeed(seed);
+        const wallet = root.derivePath("m/44'/60'/0'/0/0").getWallet();
+
+        const address = wallet.getAddressString();
+        const privateKey = wallet.getPrivateKeyString();
+        const publicKey = await caver.klay.accounts.privateKeyToPublicKey(
+          privateKey
+        );
+        const keystore = await caver.klay.accounts.encryptV3(
+          privateKey,
+          password
+        );
+
+        const result = {
+          address: address,
+          privateKey: privateKey,
+          publicKey: publicKey,
+          seedPhrase: mnemonic,
+          pwd: password,
+          keystore: keystore,
+        };
+
+        resolve(result);
+      }
+    } catch (error) {
+      logger.error(error.message);
+      return reject(error);
+    }
+  });
 };
 
 module.exports = createWallet;
