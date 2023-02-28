@@ -1,14 +1,15 @@
-const baobab = require("../../../blockchain/klaytn/testnet");
+const getCaver = require("../../getCaver");
 const { logger } = require("../../../utils/winston");
 
 const isValidPrivateKey = (privateKey) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await baobab.utils.isValidPrivateKey(privateKey);
+      const caver = await getCaver("1001");
+      const result = await caver.utils.isValidPrivateKey(privateKey);
       logger.info(privateKey + " isValidPrivateKey " + result);
 
       if (result) {
-        const publicKey = await baobab.klay.accounts.privateKeyToPublicKey(
+        const publicKey = await caver.klay.accounts.privateKeyToPublicKey(
           privateKey
         );
 

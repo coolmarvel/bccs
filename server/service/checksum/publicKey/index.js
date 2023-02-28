@@ -1,10 +1,11 @@
-const baobab = require("../../../blockchain/klaytn/testnet");
+const getCaver = require("../../getCaver");
 const { logger } = require("../../../utils/winston");
 
 const isValidPublicKey = (publicKey) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await baobab.utils.isValidPublicKey(publicKey);
+      const caver = await getCaver("1001");
+      const result = await caver.utils.isValidPublicKey(publicKey);
       logger.info(publicKey + " isValidPublicKey " + result);
 
       if (result) {

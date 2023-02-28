@@ -1,10 +1,12 @@
-const baobab = require("../../../blockchain/klaytn/testnet");
+const getCaver = require("../../getCaver");
+
 const { logger } = require("../../../utils/winston");
 
 const isValidAddress = (address) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const result = await baobab.utils.isAddress(address);
+      const caver = await getCaver("1001");
+      const result = await caver.utils.isAddress(address);
       logger.info(address + " isValidAddress " + result);
 
       if (result) {
