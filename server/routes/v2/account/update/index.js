@@ -1,7 +1,6 @@
 const router = require("express").Router();
-const { logger } = require("../../../../utils/winston");
 
-const baobab = require("../../../../blockchain/klaytn/testnet");
+const { logger } = require("../../../../utils/winston");
 
 router.post("/update", async (req, res) => {
   try {

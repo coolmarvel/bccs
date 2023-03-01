@@ -3,15 +3,13 @@ const fs = require("fs");
 
 const { logger } = require("../../../../../utils/winston");
 
-const baobab = require("../../../../../blockchain/klaytn/testnet");
-
-const createERC20 = require("../../../../../service/createContract/erc20");
-const compileContract = require("../../../../../service/compileContract/erc20");
 const {
   rmDir,
   getFile,
   getFiles,
 } = require("../../../../../service/buildFiles");
+const createERC20 = require("../../../../../service/createContract/erc20");
+const compileContract = require("../../../../../service/compileContract/erc20");
 
 router.post("/compile", async (req, res) => {
   try {
