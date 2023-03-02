@@ -24,7 +24,7 @@ router.post("/compile", async (req, res) => {
 
     await rmDir();
 
-    res.send(result);
+    res.send({ result });
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });
