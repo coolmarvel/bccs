@@ -7,23 +7,21 @@ const deployContractFeeDelegate = (
   chainId,
   abi,
   bytecode,
-  fromAddress,
   fromPrivateKey,
-  feePayAddress,
   feePayPrivateKey
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
       if (chainId == "1001" || chainId == "8217") {
         const caver = await getCaver(chainId);
-        await caver.klay.accounts.wallet.add(fromPrivateKey);
-        await caver.klay.accounts.wallet.add(feePayPrivateKey);
+        const sender = await caver.klay.accounts.wallet.add(fromPrivateKey);
+        const feePayer = await caver.klay.accounts.wallet.add(feePayPrivateKey);
 
         const encoded = await caver.abi.encodeContractDeploy(abi, bytecode);
         const rawTx = (
           await caver.klay.accounts.signTransaction({
             type: "FEE_DELEGATED_SMART_CONTRACT_DEPLOY",
-            from: fromAddress,
+            from: sender.address,
             data: encoded,
             gas: 10000000,
             value: caver.utils.toPeb("0", "KLAY"),
@@ -32,7 +30,7 @@ const deployContractFeeDelegate = (
         const receipt = await caver.klay
           .sendTransaction({
             senderRawTransaction: rawTx,
-            feePayer: feePayAddress,
+            feePayer: feePayer.address,
           })
           .then((response) => {
             const result = response;
@@ -41,8 +39,8 @@ const deployContractFeeDelegate = (
             return result;
           });
 
-        await caver.klay.accounts.wallet.remove(fromAddress);
-        await caver.klay.accounts.wallet.remove(feePayAddress);
+        await caver.klay.accounts.wallet.remove(sender.address);
+        await caver.klay.accounts.wallet.remove(feePayer.address);
 
         resolve(receipt);
       }

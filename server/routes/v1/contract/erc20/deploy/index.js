@@ -31,7 +31,9 @@ router.post("/deploy", async (req, res) => {
 });
 
 const fdRouter = require("./feeDelegate");
+const estimateRouter = require("./estimate");
 
 router.use("/fd", fdRouter);
+router.use("/deploy", estimateRouter);
 
 module.exports = router;
