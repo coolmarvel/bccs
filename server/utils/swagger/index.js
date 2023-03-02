@@ -32,6 +32,7 @@ const options = {
     },
   },
   apis: [
+    "swagger.yaml",
     "./routes/*.js",
     "./routes/*/*.js",
     "./routes/*/*/*.js",
