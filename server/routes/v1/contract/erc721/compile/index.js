@@ -7,19 +7,14 @@ const {
   getFile,
   getFiles,
 } = require("../../../../../service/buildFiles");
-const createERC20 = require("../../../../../service/createContract/erc20");
-const compileContract = require("../../../../../service/compileContract/erc20");
+const createERC721 = require("../../../../../service/createContract/erc721");
+const compileContract = require("../../../../../service/compileContract/erc721");
 
 router.post("/compile", async (req, res) => {
   try {
     const { name } = req.body;
-    const contract = await createERC20(req.body);
+    const contract = await createERC721(req.body);
     await compileContract(name, contract);
-
-    // const abi = await baobab.abi.encodeContractDeploy(
-    //   require(`../../../../../build/contracts/${name}.json`).abi,
-    //   require(`../../../../../build/contracts/${name}.json`).bytecode
-    // );
 
     let result = [];
     const files = await getFiles();

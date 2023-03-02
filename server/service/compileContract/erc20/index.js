@@ -1,5 +1,4 @@
 const cmd = require("node-cmd");
-const solc = require("solc");
 const fs = require("fs");
 
 const { logger } = require("../../../utils/winston");
