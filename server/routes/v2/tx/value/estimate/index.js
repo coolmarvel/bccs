@@ -44,3 +44,43 @@ router.post("/estimate", async (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * @swagger
+ * paths:
+ *  /v2/tx/value/estimate:
+ *    post:
+ *      tags: [V2 (TX)]
+ *      summary:  balance transfer estimateGas
+ *      parameters:
+ *        - in: header
+ *          name: x-chain-id
+ *      requestBody:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                fromAddress:
+ *                  example:  "0x2dee005b923e510b129c0544b4d52b182e3778a3"
+ *                fromPrivateKey:
+ *                  example:  "0xf764a1780dda07c3b92a4688501397653435da846af002a6c97b94237400606b"
+ *                toAddress:
+ *                  example:  "0xee520d6A09D12c75ff9b2F2F0E56F780c48cab9F"
+ *                value:
+ *                  type: string
+ *                  example:  "1"
+ *      responses:
+ *        200:
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  gasPrice:
+ *                    example:  50
+ *                  estimatedGas:
+ *                    example:  34800
+ *                  txFee:
+ *                    example:  0.00174
+ */

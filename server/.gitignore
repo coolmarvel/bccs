@@ -4,3 +4,4 @@ kaikas*.json
 yarn.lock
 logs/*
 build
+.env

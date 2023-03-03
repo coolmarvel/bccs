@@ -53,3 +53,40 @@ router.post("/", async (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * @swagger
+ * paths:
+ *  /v2/tx/fd/value:
+ *    post:
+ *      tags: [V2 (TX)]
+ *      summary:  only Klaytn blockchain can feeDelegate method
+ *      parameters:
+ *        - in: header
+ *          name: x-chain-id
+ *      requestBody:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                fromAddress:
+ *                  example:
+ *                fromPrivateKey:
+ *                  example:
+ *                toAddress:
+ *                  example:
+ *                feePayAddress:
+ *                  example:
+ *                feePayPrivateKey:
+ *                  example:
+ *      response:
+ *        200:
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  receipt:
+ *                    example:
+ */

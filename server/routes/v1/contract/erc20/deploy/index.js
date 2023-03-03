@@ -49,7 +49,7 @@ module.exports = router;
  *        - in: header
  *          name: x-chain-id
  *          schema:
- *            type: string=
+ *            type: string
  *      requestBody:
  *        required: true
  *        description:  |

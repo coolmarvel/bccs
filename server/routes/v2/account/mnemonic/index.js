@@ -16,3 +16,23 @@ router.post("/mnemonic", (req, res) => {
 });
 
 module.exports = router;
+
+
+/**
+ * @swagger
+ * paths:
+ *  /v2/account/mnemonic:
+ *    post:
+ *      tags: [V2 (Account)]
+ *      summary: generate 12phrase mnemonic
+ *      responses:
+ *        200:
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  mnemonic:
+ *                    type: string
+ *                    example:  rival autumn exist dwarf world island duty credit dumb bullet trade north
+ */
