@@ -26,3 +26,91 @@ const fdRouter = require("./feeDelegate");
 router.use("/fd", fdRouter);
 
 module.exports = router;
+
+/**
+ * @swagger
+ * paths:
+ *  /v1/contract/ft/deploy/estimate:
+ *    post:
+ *      tags: [V1 (ERC20)]
+ *      summary: "ERC20 Contract Deploy's gas estimate"
+ *      parameters:
+ *        - in: header
+ *          name: x-chain-id
+ *          schema:
+ *            type: string
+ *      requestBody:
+ *        required: true
+ *        description:
+ *          abi = jsoninterface
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                privateKey:
+ *                  example: 0xf76...06b
+ *                abi:
+ *                  type: array
+ *                  example: [...]
+ *                bytecode:
+ *                  type: string
+ *      responses:
+ *        200:
+ *          description: estimateGas success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  gas:
+ *                    example: 50
+ *                  estimatedGas:
+ *                    example: 2535300
+ *                  txFee:
+ *                    example: 0.126765
+ */
+
+/**
+ * @swagger
+ * paths:
+ *  /v1/contract/ft/deploy/fd/estimate:
+ *    post:
+ *      tags: [V1 (ERC20)]
+ *      summary: "ERC20 Contract FeeDelegate Deploy's gas estimate"
+ *      parameters:
+ *        - in: header
+ *          name: x-chain-id
+ *          schema:
+ *            type: string
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                fromPrivateKey:
+ *                  example: 0xf76...06b
+ *                feePayPrivateKey:
+ *                  example: 0xf76...06b
+ *                abi:
+ *                  type: array
+ *                  example: [...]
+ *                bytecode:
+ *                  type: string
+ *      responses:
+ *        200:
+ *          description: estimateGas success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  gas:
+ *                    example: 50
+ *                  estimatedGas:
+ *                    example: 2535300
+ *                  txFee:
+ *                    example: 0.12689
+ */

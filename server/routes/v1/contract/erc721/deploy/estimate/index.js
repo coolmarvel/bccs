@@ -26,3 +26,93 @@ const fdRouter = require("./feeDelegate");
 router.use("/fd", fdRouter);
 
 module.exports = router;
+
+/**
+ * @swagger
+ * paths:
+ *  /v1/contract/nft/deploy/estimate:
+ *    post:
+ *      tags: [V1 (ERC721)]
+ *      summary: "ERC721 Contract Deploy's gas estimate"
+ *      parameters:
+ *        - in: header
+ *          name: x-chain-id
+ *          schema:
+ *            type: string
+ *      requestBody:
+ *        required: true
+ *        description:  |
+ *          | privateKey       | abi            | bytecode     |
+ *          | ---------------- | -------------- | ------------ |
+ *          | wallet privateKey| JSON Interface | compile first|
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                privateKey:
+ *                  example: 0xf76...06b
+ *                abi:
+ *                  type: array
+ *                  example: [...]
+ *                bytecode:
+ *                  type: string
+ *      responses:
+ *        200:
+ *          description: estimateGas success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  gas:
+ *                    example: 50
+ *                  estimatedGas:
+ *                    example: 1682600
+ *                  txFee:
+ *                    example: 0.08413
+ */
+
+/**
+ * @swagger
+ * paths:
+ *  /v1/contract/nft/deploy/fd/estimate:
+ *    post:
+ *      tags: [V1 (ERC721)]
+ *      summary: "ERC721 Contract FeeDelegate Deploy's gas estimate"
+ *      parameters:
+ *        - in: header
+ *          name: x-chain-id
+ *          schema:
+ *            type: string
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                fromPrivateKey:
+ *                  example: 0xf76...06b
+ *                feePayPrivateKey:
+ *                  example: 0xf76...06b
+ *                abi:
+ *                  type: array
+ *                  example: [...]
+ *                bytecode:
+ *                  type: string
+ *      responses:
+ *        200:
+ *          description: estimateGas success
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  gas:
+ *                    example: 50
+ *                  estimatedGas:
+ *                    example: 1685100
+ *                  txFee:
+ *                    example: 0.084255
+ */

@@ -7,7 +7,7 @@ const options = {
     info: {
       version: "1.0.0",
       title: "BCCS",
-      description: "이더리움 기반 RESTFUL API 클라이언트",
+      description: "BCCS API",
       license: {
         name: "MIT",
         url: "https://spdx.org/licenses/MIT.html",
@@ -20,7 +20,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:8080/api",
+        url: "http://localhost:8080",
       },
     ],
     securityDefinitions: {
@@ -32,7 +32,6 @@ const options = {
     },
   },
   apis: [
-    "swagger.yaml",
     "./routes/*.js",
     "./routes/*/*.js",
     "./routes/*/*/*.js",

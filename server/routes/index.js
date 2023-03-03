@@ -22,3 +22,23 @@ router.use("/v3", v3Router);
 router.use("/v4", v4Router);
 
 module.exports = router;
+
+/**
+ * @swagger
+ * paths:
+ *  /:
+ *    get:
+ *      summary: "server-client ping check"
+ *      description: "server-client ping check"
+ *      tags: [Ping]
+ *      responses:
+ *        "200":
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    type: string
+ *                    example: "server-client connected"
+ */

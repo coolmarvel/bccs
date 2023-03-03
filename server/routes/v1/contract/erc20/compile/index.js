@@ -37,3 +37,62 @@ router.post("/compile", async (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * @swagger
+ * paths:
+ *  /v1/contract/ft/compile:
+ *    post:
+ *      tags: [V1 (ERC20)]
+ *      summary: "ERC20 Contract Compile"
+ *      requestBody:
+ *        description:  |
+ *          | access           | upgradeable   | info                                                         |
+ *          | ---------------- | ------------- | ------------------------------------------------------------ |
+ *          | "ownable"        | "uups"        | {securityContact: null, license: null}                       |
+ *          | "roles"          | "transparent" | {securityContact: null, license: MIT}                        |
+ *          | ""               | null          | {securityContact: marvel97@naver.com, license: COOLMARVEL}   |
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                name:
+ *                  example:  TestToken
+ *                symbol:
+ *                  example:  TTK
+ *                premint:
+ *                  type: string
+ *                  example:  "10000"
+ *                votes:
+ *                  example:  false
+ *                permit:
+ *                  example:  false
+ *                mintable:
+ *                  example:  true
+ *                burnable:
+ *                  example:  true
+ *                pausable:
+ *                  example:  true
+ *                flashmint:
+ *                  example:  false
+ *                snapshot:
+ *                  example:  true
+ *                access:
+ *                  example:  ownable
+ *                upgradeable:
+ *                  example:  null
+ *                info:
+ *                  example:  {securityContact: marvel97@naver.com,license: COOLMARVEL}
+ *      responses:
+ *        200:
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  result:
+ *                    type: array
+ *                    example:
+ *                      [{contractName: Context},...,{contractName: TestToken}]
+ */
