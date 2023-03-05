@@ -3,7 +3,7 @@ const axios = require("axios");
 
 const { logger } = require("../../../../utils/winston");
 
-router.get("/tokens", async (req, res) => {
+router.post("/tokens", async (req, res) => {
   try {
     const result = await axios
       .get("https://tokens.coingecko.com/uniswap/all.json")

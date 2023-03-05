@@ -36,7 +36,12 @@ const erc20ABI = [
   {
     anonymous: false,
     inputs: [
-      { indexed: true, internalType: "address", name: "from", type: "address" },
+      {
+        indexed: true,
+        internalType: "address",
+        name: "from",
+        type: "address",
+      },
       { indexed: true, internalType: "address", name: "to", type: "address" },
       {
         indexed: false,

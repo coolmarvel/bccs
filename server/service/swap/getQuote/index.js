@@ -12,8 +12,8 @@ const getQuote = async (from, to, value, address) => {
 
       const amount = Number(value * 10 ** from.decimals);
       const params = {
-        sellToken: from.address,
-        buyToken: to.address,
+        buyToken: from.address,
+        sellToken: to.address,
         sellAmount: amount,
         takerAddress: address,
         skipValidation: true,

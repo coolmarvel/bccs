@@ -9,8 +9,8 @@ router.post("/tx", async (req, res) => {
   try {
     const { from, to, value, address, privateKey } = req.body;
 
-    const result = await getQuote(from, to, value, address);
-    const receipt = await swapTX(from, result, privateKey);
+    const quote = await getQuote(from, to, value, address);
+    const receipt = await swapTX(from, quote, privateKey);
 
     res.send(receipt);
   } catch (error) {
