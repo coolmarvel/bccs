@@ -16,11 +16,6 @@ router.post("/compile", async (req, res) => {
     const contract = await createERC20(req.body);
     await compileContract(name, contract);
 
-    // const abi = await baobab.abi.encodeContractDeploy(
-    //   require(`../../../../../build/contracts/${name}.json`).abi,
-    //   require(`../../../../../build/contracts/${name}.json`).bytecode
-    // );
-
     let result = [];
     const files = await getFiles();
     for (let i = 0; i < files.length; i++) {

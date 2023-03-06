@@ -2,18 +2,18 @@ const router = require("express").Router();
 
 const { logger } = require("../../../utils/winston");
 
-const scan = require("../../../service/scan");
+const scanTX = require("../../../service/scanTX");
 const isValidChainId = require("../../../service/chainId");
 const isValidAddress = require("../../../service/checksum/address");
 
 router.post("/", async (req, res) => {
   try {
-    const { address } = req.body;
+    const { address, page } = req.body;
 
     const chainId = await isValidChainId(req);
     await isValidAddress(address);
 
-    const result = await scan(chainId, address);
+    const result = await scanTX(chainId, address, page);
 
     res.send(result);
   } catch (error) {
