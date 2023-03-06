@@ -278,33 +278,23 @@ const scanTX = (chainId, address, page) => {
       }
       // 폴리곤 테스트넷
       else if (chainId == "80001") {
-        await axios
+        const html = await axios
           .get(
-            `https://mumbai.polygonscan.com/txs?a=0${address}&ps=50&p=${page}`
+            `https://mumbai.polygonscan.com/txs?a=${address}&ps=50&p=${page}`
           )
           .then((response) => {
             const $ = cheerio.load(response.data);
-            const method = $("div table tbody tr td");
 
-            method.map((i, v) => {
-              console.log(v.children[0].children);
+            const $href = $("table tbody tr td span a");
+
+            $href.map((i, v) => {
+              console.log(v);
             });
+
+            return response.data;
           });
 
-        const result = $txHash.map((v, i) => {
-          const form = {
-            txHash: v,
-            block: $block[i],
-            method: $inOut[i],
-            age: $age[i],
-            address: { from: from[i], to: to[i] },
-            value: $value[i],
-            txFee: txFee[i],
-            gasPrice: gasPrice[i],
-          };
-          return form;
-        });
-        resolve(result);
+        resolve(html);
       }
       // 폴리곤 메인넷
       else if (chainId == "137") {
