@@ -2,13 +2,14 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../utils/winston");
 
-const setWallet = require("../../../../service/wallet/ethereum/set");
+const importWallet = require("../../../../service/wallet/ethereum/import");
 
-router.post("/set", async (req, res) => {
+router.post("/import", async (req, res) => {
   try {
     const { privateKey, keystore, password } = req.body;
 
-    const result = await setWallet(privateKey, keystore, password);
+    const result = await importWallet(privateKey, keystore, password);
+
     res.send(result);
   } catch (error) {
     logger.error(error.message);
@@ -34,7 +35,7 @@ module.exports = router;
  *      requestBody:
  *        description: |
  *          | privateKey로 등록할시 | 키스토어랑 비밀번호로 진행할시 아래의 예시처럼 |
- *          | ---------------- | ------------- | 
+ *          | ---------------- | ------------- |
  *          | { "privateKey": "0xf764a1780dda07c3b92a4688501397653435da846af002a6c97b94237400606b" } | |
  *        content:
  *          application/json:
@@ -71,7 +72,7 @@ module.exports = router;
 //  *      tags: [V2 (Account)]
 //  *      summary:  BIP44 wallet set from privateKey
 //  *      requestBody:
-//  *        description:  privateKey 
+//  *        description:  privateKey
 //  *        content:
 //  *          application/json:
 //  *            schema:

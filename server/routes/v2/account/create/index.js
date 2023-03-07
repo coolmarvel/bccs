@@ -6,18 +6,9 @@ const createWallet = require("../../../../service/wallet/ethereum/create");
 
 router.post("/create", async (req, res) => {
   try {
-    const { mnemonic, password } = req.body;
+    const { mnemonic } = req.body;
 
-    const { address, privateKey, publicKey, seedPhrase, pwd, keystore } =
-      await createWallet(mnemonic, password);
-    const result = {
-      address: address,
-      privateKey: privateKey,
-      publicKey: publicKey,
-      mnemonic: seedPhrase,
-      password: pwd,
-      keystore: keystore,
-    };
+    const result = await createWallet(mnemonic);
 
     res.send(result);
   } catch (error) {
@@ -38,7 +29,7 @@ module.exports = router;
  *      requestBody:
  *        description:  |
  *          | mnemonic         | password      |
- *          | ---------------- | ------------- | 
+ *          | ---------------- | ------------- |
  *          | optional         | optional      |
  *        content:
  *          application/json:
