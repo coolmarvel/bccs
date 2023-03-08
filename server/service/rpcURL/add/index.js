@@ -1,5 +1,7 @@
 const axios = require("axios");
 
+const { logger } = require("../../../utils/winston");
+
 const addNetwork = (url) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -15,9 +17,13 @@ const addNetwork = (url) => {
 
           return result;
         });
-      console.log(chains);
 
-      resolve(chains);
+      if (chains) {
+        resolve(chains);
+      } else {
+        logger.error("Invalid RPC URL: " + url);
+        return reject({ message: "Invalid RPC URL" });
+      }
     } catch (error) {
       return reject(error);
     }

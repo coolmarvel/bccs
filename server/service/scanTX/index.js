@@ -63,7 +63,9 @@ const scanTX = (chainId, address, page) => {
             });
 
             age.each((i, v) => {
-              $age.push(v.attribs["data-bs-title"]);
+              let date = new Date(v.attribs["data-bs-title"]);
+              let unixTime = Math.floor(date.getTime() / 1000);
+              $age.push(unixTime);
             });
 
             inOut.each((i, v) => {
@@ -156,7 +158,9 @@ const scanTX = (chainId, address, page) => {
             });
 
             age.each((i, v) => {
-              $age.push(v.attribs["data-bs-title"]);
+              let date = new Date(v.attribs["data-bs-title"]);
+              let unixTime = Math.floor(date.getTime() / 1000);
+              $age.push(unixTime);
             });
 
             inOut.each((i, v) => {
@@ -249,7 +253,9 @@ const scanTX = (chainId, address, page) => {
             });
 
             age.each((i, v) => {
-              $age.push(v.attribs["data-bs-title"]);
+              let date = new Date(v.attribs["data-bs-title"]);
+              let unixTime = Math.floor(date.getTime() / 1000);
+              $age.push(unixTime);
             });
 
             inOut.each((i, v) => {
@@ -352,7 +358,9 @@ const scanTX = (chainId, address, page) => {
             });
 
             age.each((i, v) => {
-              $age.push(v.attribs.title);
+              let date = new Date(v.attribs.title);
+              let unixTime = Math.floor(date.getTime() / 1000);
+              $age.push(unixTime);
             });
 
             inOut.each((i, v) => {
@@ -472,7 +480,9 @@ const scanTX = (chainId, address, page) => {
             });
 
             age.each((i, v) => {
-              $age.push(v.attribs.title);
+              let date = new Date(v.attribs.title);
+              let unixTime = Math.floor(date.getTime() / 1000);
+              $age.push(unixTime);
             });
 
             inOut.each((i, v) => {
@@ -592,7 +602,9 @@ const scanTX = (chainId, address, page) => {
             });
 
             age.each((i, v) => {
-              $age.push(v.attribs.title);
+              let date = new Date(v.attribs.title);
+              let unixTime = Math.floor(date.getTime() / 1000);
+              $age.push(unixTime);
             });
 
             inOut.each((i, v) => {
@@ -710,7 +722,9 @@ const scanTX = (chainId, address, page) => {
             });
 
             age.each((i, v) => {
-              $age.push(v.attribs.title);
+              let date = new Date(v.attribs.title);
+              let unixTime = Math.floor(date.getTime() / 1000);
+              $age.push(unixTime);
             });
 
             inOut.each((i, v) => {

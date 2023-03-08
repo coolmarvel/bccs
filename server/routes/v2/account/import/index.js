@@ -28,10 +28,10 @@ module.exports = router;
 /**
  * @swagger
  * paths:
- *  /v2/account/set:
+ *  /v2/account/import:
  *    post:
  *      tags: [V2 (Account)]
- *      summary:  BIP44 wallet set from keystore & password
+ *      summary:  BIP44 wallet import from keystore & password
  *      requestBody:
  *        description: |
  *          | privateKey로 등록할시 | 키스토어랑 비밀번호로 진행할시 아래의 예시처럼 |
@@ -63,33 +63,3 @@ module.exports = router;
  *                  publicKey:
  *                    example:  "0xa9f4b0dbe1b7ba1608d442a0ce65a5afa3a6c59b3882cff0225cc1101657ddbf8e0acbd9eb4a92daed5ffdbac1bc631bbc1f175233d6ea6baebd980decd12ab2"
  */
-
-// /**
-//  * @swagger
-//  * paths:
-//  *  /v2/account/set:
-//  *    post:
-//  *      tags: [V2 (Account)]
-//  *      summary:  BIP44 wallet set from privateKey
-//  *      requestBody:
-//  *        description:  privateKey
-//  *        content:
-//  *          application/json:
-//  *            schema:
-//  *              type: object
-//  *              properties:
-//  *                privateKey:
-//  *                  example: "0xf764a1780dda07c3b92a4688501397653435da846af002a6c97b94237400606b"
-//  *      responses:
-//  *        200:
-//  *          content:
-//  *            application/json:
-//  *              schema:
-//  *                properties:
-//  *                  address:
-//  *                    example:  "0x2dee005b923e510b129c0544b4d52b182e3778a3"
-//  *                  privateKey:
-//  *                    example:  "0xf764a1780dda07c3b92a4688501397653435da846af002a6c97b94237400606b"
-//  *                  publicKey:
-//  *                    example:  "0xa9f4b0dbe1b7ba1608d442a0ce65a5afa3a6c59b3882cff0225cc1101657ddbf8e0acbd9eb4a92daed5ffdbac1bc631bbc1f175233d6ea6baebd980decd12ab2"
-//  */

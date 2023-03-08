@@ -3,16 +3,15 @@ const router = require("express").Router();
 const { logger } = require("../../../../utils/winston");
 
 const addNetwork = require("../../../../service/rpcURL/add");
-const isValidChainId = require("../../../../service/chainId");
 
 router.post("/add", async (req, res) => {
   try {
     const { url } = req.body;
 
     const chains = await addNetwork(url);
-    console.log(chains);
+    logger.info(chains);
 
-    res.send({ message: true });
+    res.send(chains);
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });
@@ -20,3 +19,19 @@ router.post("/add", async (req, res) => {
 });
 
 module.exports = router;
+
+// const axios = require("axios");
+// const { hexToDecimal } = require("../../../../utils/converter");
+
+// const body = {
+//   id: "",
+//   jsonrpc: "2.0",
+//   method: "eth_chainId",
+//   params: [],
+// };
+
+// await axios
+//   .post("https://testnet.gather.network", body)
+//   .then((response) => {
+//     console.log("data: ", hexToDecimal(response.data.result));
+//   });
