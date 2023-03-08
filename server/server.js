@@ -6,7 +6,6 @@ const helmet = require("helmet");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const basicAuth = require("express-basic-auth");
 const fileUpload = require("express-fileupload");
 
 const { logger, stream } = require("./utils/winston");
@@ -15,6 +14,13 @@ const { swaggerUI, specs } = require("./utils/swagger");
 const { COOKIE_SECRET } = process.env;
 
 const app = express();
+
+// router
+const router = require("./routes");
+
+app.use(bodyParser.json());
+app.use("/", router);
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(
   express.urlencoded({
@@ -26,16 +32,9 @@ app.use(
 app.use(cors());
 app.use(helmet());
 app.use(fileUpload());
-app.use(bodyParser.json());
 app.use(morgan("short", { stream }));
 app.use(cookieParser(COOKIE_SECRET));
 app.use(express.static(path.join(__dirname, "public")));
-
-// router
-const router = require("./routes");
-
-app.use("/", router);
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

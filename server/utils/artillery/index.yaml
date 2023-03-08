@@ -1,0 +1,14 @@
+config:
+  target: "http://localhost:8080"
+  phases:
+    - duration: 10
+      arrivalRate: 10
+  defaults:
+    - headers:
+        x-chain-id: "1001"
+
+scenarios:
+  - name: "API TEST"
+    flow:
+      - get:
+          url: "/"

@@ -6,11 +6,21 @@
   },
   "scenarios": [
     {
-      "name": "server-client connected",
+      "name": "account create",
       "flow": [
-        { "get": { "url": "/" } },
-        { "post": { "url": "/v2/account/mnemonic" } },
-        { "post": { "url": "/v2/account/create" } }
+        {
+          "post": {
+            "url": "/v2/account/mnemonic",
+            "json": { "mnemonic": "{{mnemonic}}" },
+            "capture": { "json": "$.mnemonic", "as": "mnemonic" }
+          }
+        },
+        {
+          "post": {
+            "url": "/v2/account/create",
+            "match": { "json": "$.mnemonic", "value": "{{mnemonic}}" }
+          }
+        }
       ]
     }
   ]

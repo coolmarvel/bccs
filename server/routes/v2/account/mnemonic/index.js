@@ -7,6 +7,7 @@ const { logger } = require("../../../../utils/winston");
 router.post("/mnemonic", (req, res) => {
   try {
     const mnemonic = bip39.generateMnemonic();
+    logger.info("mnemonic: " + mnemonic);
 
     res.send({ mnemonic: mnemonic });
   } catch (error) {
@@ -16,7 +17,6 @@ router.post("/mnemonic", (req, res) => {
 });
 
 module.exports = router;
-
 
 /**
  * @swagger

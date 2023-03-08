@@ -7,6 +7,7 @@ const createWallet = require("../../../../service/wallet/ethereum/create");
 router.post("/create", async (req, res) => {
   try {
     const { mnemonic } = req.body;
+    logger.info("mnemonic: " + mnemonic);
 
     const wallet = await createWallet(mnemonic);
     const result = {

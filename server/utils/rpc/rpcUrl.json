@@ -19,7 +19,7 @@
       "status": "on"
     }
   },
-  "57": {
+  "56": {
     "1": { "rpc": "https://bsc-dataseed.binance.org", "status": "on" },
     "2": { "rpc": "ttps://bsc-dataseed1.binance.org", "status": "on" },
     "3": { "rpc": "ttps://bsc-dataseed2.binance.org", "status": "on" },
