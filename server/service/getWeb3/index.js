@@ -2,6 +2,7 @@ const Web3 = require("web3");
 const axios = require("axios");
 
 const { logger } = require("../../utils/winston");
+const { INFURA_KEY } = process.env;
 
 const getWeb3 = async (chainId) => {
   return new Promise(async (resolve, reject) => {
@@ -12,7 +13,11 @@ const getWeb3 = async (chainId) => {
           let result;
           response.data.map((v, i) => {
             if (v.chainId == Number(chainId)) {
-              result = v.rpc[0];
+              if (v.rpc[0].includes("INFURA_API_KEY")) {
+                result = v.rpc[0].replace("${INFURA_API_KEY}", `${INFURA_KEY}`);
+              } else {
+                result = v.rpc[0];
+              }
             }
           });
 

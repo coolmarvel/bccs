@@ -1,7 +1,7 @@
 const router = require("express").Router();
 
-const accountRouter = require("./account");
+const tokenRouter = require("./token");
 
-router.use("/account", accountRouter);
+router.use("/token", tokenRouter);
 
 module.exports = router;
