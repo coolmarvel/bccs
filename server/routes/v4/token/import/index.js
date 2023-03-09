@@ -3,7 +3,7 @@ const router = require("express").Router();
 const { logger } = require("../../../../utils/winston");
 
 const isValidChainId = require("../../../../service/chainId");
-const importToken = require("../../../../service/importToken");
+const importToken = require("../../../../service/customToken/import");
 const isValidAddress = require("../../../../service/checksum/address");
 
 router.post("/import", async (req, res) => {
@@ -36,3 +36,44 @@ router.post("/import", async (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * @swagger
+ * paths:
+ *  /v4/token/import:
+ *    post:
+ *      tags: [V4 (Token)]
+ *      summary:  custom ERC20 token import
+ *      paramters:
+ *        - in: header
+ *          name: x-chain-id
+ *      requestBody:
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                address:
+ *                  example: "0xee520d6A09D12c75ff9b2F2F0E56F780c48cab9F"
+ *                contractAddress:
+ *                  example:  "0x66623e1Bc3c3F3E6A0973e5db138853542bE629c"
+ *      responses:
+ *        200:
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  chainId:
+ *                    example: 1001
+ *                  symbol:
+ *                    example:  "TTK"
+ *                  decimals:
+ *                    example:  "18"
+ *                  balance:
+ *                    example:  "999999999999996"
+ *                  address:
+ *                    example:  "0xee520d6A09D12c75ff9b2F2F0E56F780c48cab9F"
+ *                  contractAddress:
+ *                    example:  "0x66623e1Bc3c3F3E6A0973e5db138853542bE629c"
+ */

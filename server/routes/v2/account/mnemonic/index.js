@@ -9,7 +9,7 @@ router.post("/mnemonic", (req, res) => {
     const mnemonic = bip39.generateMnemonic();
     logger.info("mnemonic: " + mnemonic);
 
-    res.send({ mnemonic: mnemonic });
+    res.send({ mnemonic });
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });

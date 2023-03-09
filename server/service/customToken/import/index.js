@@ -1,8 +1,8 @@
-const getWeb3 = require("../getWeb3");
-const getCaver = require("../getCaver");
+const getWeb3 = require("../../getWeb3");
+const getCaver = require("../../getCaver");
 
-const { logger } = require("../../utils/winston");
-const abi = require("../../utils/data/kip7/abi");
+const abi = require("../../../utils/data/erc20/abi");
+const { logger } = require("../../../utils/winston");
 
 const importToken = (chainId, contractAddress, address) => {
   return new Promise(async (resolve, reject) => {
