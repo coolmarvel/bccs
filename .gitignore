@@ -14,7 +14,6 @@ build_webpack
 
 # misc
 .DS_Store
-.env
 npm-debug.log
 .truffle-solidity-loader
 .vagrant/**
@@ -27,5 +26,7 @@ logs
 .tern-port
 yarn.lock
 package-lock.json
+
+.env
 
 # End of https://www.toptal.com/developers/gitignore/api/soliditytruffle
