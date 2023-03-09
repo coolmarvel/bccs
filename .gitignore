@@ -4,6 +4,7 @@
 ### SolidityTruffle ###
 # depedencies
 node_modules
+build
 
 # testing
 coverage
