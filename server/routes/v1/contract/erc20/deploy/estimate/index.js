@@ -69,6 +69,15 @@ module.exports = router;
  *                    example: 2535300
  *                  txFee:
  *                    example: 0.126765
+ *        400:
+ *          description:  잘못된 비밀키 기입시
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    example:  "Invalid privateKey"
  */
 
 /**
@@ -113,4 +122,13 @@ module.exports = router;
  *                    example: 2535300
  *                  txFee:
  *                    example: 0.12689
+ *        400:
+ *          description:  잘못된 비밀키 기입시
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                    example:  "Invalid privateKey"
  */

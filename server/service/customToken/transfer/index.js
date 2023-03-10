@@ -14,6 +14,7 @@ const transferToken = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
+      // 클레이튼 테스트넷, 메인넷
       if (chainId == "1001" || chainId == "8217") {
         const caver = await getCaver(chainId);
         await caver.klay.accounts.wallet.add(fromPrivateKey);
@@ -27,8 +28,7 @@ const transferToken = (
           const contract = new caver.klay.Contract(abi, contractAddress);
           const balance = await contract.methods.balanceOf(fromAddress).call();
 
-          if (balance < value)
-            return reject({ message: "you don't hava a enough balance" });
+          if (balance < value) return reject({ message: "Not enough balance" });
 
           const transferTx = contract.methods.transfer(toAddress, value);
           const transferABI = transferTx.encodeABI();
@@ -53,10 +53,27 @@ const transferToken = (
         } else {
           return reject({ message: "Invalid contractAddress" });
         }
-      } else {
+      }
+      // 이더리움 계열 네트워크
+      else {
         const web3 = await getWeb3(chainId);
+        await web3.eth.accounts.wallet.add(fromPrivateKey);
 
-        resolve();
+        const contract = new web3.eth.Contract(abi, contractAddress);
+        const balance = await contract.methods.balanceOf(fromAddress).call();
+        if (balance < value) return reject({ message: "Not enough balance" });
+
+        const encoded = contract.methods.transfer(toAddress, value).encodeABI();
+        const receipt = await web3.eth.sendTransaction({
+          from: fromAddress,
+          to: contractAddress,
+          data: encoded,
+          gas: "600000",
+          value: web3.uitls.toWei("0", "ether"),
+        });
+
+        await web3.eth.accounts.wallet.remove(fromAddress);
+        resolve(receipt);
       }
     } catch (error) {
       return reject(error);
