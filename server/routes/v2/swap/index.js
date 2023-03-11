@@ -12,4 +12,7 @@ router.use("/", getQuoteRouter);
 router.use("/", swapTXRouter);
 router.use("/", swapRouter);
 
+const testRouter = require("./test");
+router.use("/", testRouter);
+
 module.exports = router;

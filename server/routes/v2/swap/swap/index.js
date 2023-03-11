@@ -160,12 +160,12 @@ router.post("/swap", async (req, res) => {
 
     const inAmount = CurrencyAmount.fromRawAmount(tokenIn, amountIn.toString());
 
-    const router = new AlphaRouter({
+    const alphaRouter = new AlphaRouter({
       chainId: tokenIn.chainId,
       provider: provider,
     });
 
-    const route = await router.route(
+    const route = await alphaRouter.route(
       inAmount,
       tokenOut,
       TradeType.EXACT_INPUT,
