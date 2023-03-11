@@ -180,7 +180,7 @@ router.post("/swap", async (req, res) => {
     if (route == null || route.methodParameters === undefined)
       throw "No route loaded";
 
-    const V3_SWAP_ROUTER_ADDRESS = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"; // here we just create a transaction object (not sending it to blockchain).
+    const V3_SWAP_ROUTER_ADDRESS = "0x4648a43B2C14Da09FdF82B161150d3F634f40491"; // here we just create a transaction object (not sending it to blockchain).
     const approveTxUnsigned = await contractIn.populateTransaction.approve(
       V3_SWAP_ROUTER_ADDRESS,
       amountIn
@@ -227,8 +227,8 @@ router.post("/swap", async (req, res) => {
     }
 
     const [newBalanceIn, newBalanceOut] = await Promise.all([
-      contractIn.balanceOf(walletAddress),
-      contractOut.balanceOf(walletAddress),
+      contractIn.balanceOf(address),
+      contractOut.balanceOf(address),
     ]);
 
     res.send({ newBalanceIn, newBalanceOut });

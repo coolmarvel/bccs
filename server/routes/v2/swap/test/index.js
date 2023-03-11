@@ -3,17 +3,26 @@ const axios = require("axios");
 
 const { logger } = require("../../../../utils/winston");
 
+const isValidChainId = require("../../../../service/chainId");
+
 router.post("/test", async (req, res) => {
   try {
-    const unsupported = await axios
-      .get("https://gateway.ipfs.io/ipns/unsupportedtokens.uniswap.org")
-      .then((response) => response.data);
+    const chainId = await isValidChainId(req);
 
     const tokens = await axios
       .get("https://gateway.ipfs.io/ipns/tokens.uniswap.org")
-      .then((response) => response.data);
+      .then((response) => {
+        const tokens = response.data.tokens;
+        let result = [];
+        tokens.map((v, i) => {
+          if (v.chainId == chainId) {
+            result.push(v);
+          }
+        });
+        return result;
+      });
 
-    res.send({ tokens });
+    res.send(tokens);
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });
