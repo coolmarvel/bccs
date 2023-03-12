@@ -14,7 +14,7 @@ router.post("/test", async (req, res) => {
       .then((response) => {
         const tokens = response.data.tokens;
         let result = [];
-        tokens.map((v, i) => {
+        tokens.map((v) => {
           if (v.chainId == chainId) {
             result.push(v);
           }

@@ -1,38 +1,115 @@
-const Web3 = require("web3");
-const Bignumber = require("bignumber.js");
+// uniswap and web3 modules
+const ethers = require("ethers");
 
+const abi = require("../../../utils/data/ERC20/abi");
 const { logger } = require("../../../utils/winston");
 
-const erc20ABI = require("../erc20ABI");
+const getPool = require("../getPool");
+const getQuote = require("../getQuote");
+const makeSwap = require("../makeSwap");
+const getResult = require("../getResult");
+const getSigner = require("../../getSigner");
+const approveSwap = require("../approveSwap");
+const getProvider = require("../../getProvider");
+const getTokenAndBalance = require("../getTokenAndBalance");
 
-const swapTX = async (from, quote, privateKey) => {
+const swapTx = async (
+  chainId,
+  address,
+  privateKey,
+  fromToken,
+  toToken,
+  amount
+) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const web3 = new Web3("https://bsc-mainnet-rpc.allthatnode.com");
-      const accounts = await web3.eth.accounts.wallet.add(privateKey);
-      const address = accounts.address;
+      // ============= PART 1 --- connect to blockchain and get token balances
+      logger.info("Connecting to blockchain, loading token balances...");
 
-      const fromAddress = from.address;
-      const maxApproval = new Bignumber(2).pow(256).minus(1);
-      const erc20TokenContract = new web3.eth.Contract(erc20ABI, fromAddress);
-      logger.info("erc20TokenContract:" + erc20TokenContract);
+      // Ethers.js provider to access blockchain
+      // As we're using Alchemy, it is JsonRpcProvider
+      // In case of React app + MetaMask it should be initialized as "new ethers.providers.Web3Provider(window.ethereum);"
 
-      const approveReceipt = await erc20TokenContract.methods
-        .approve(quote.allowanceTarget, maxApproval)
-        .send({ from: address, gas: 10000000 });
+      const provider = await getProvider(chainId);
+      const signer = await getSigner(privateKey, provider);
 
-      const swapReceipt = await web3.eth
-        .sendTransaction(quote)
-        .on("transactionHash", console.log)
-        .on("receipt", console.log)
-        .on("error", console.error);
+      // In case of React + Metamask it should be initialized as "provider.getSigner();"
+      // as we already have signer provided by Metamask
+      // const signer = wallet.provider.getSigner(wallet.address);
 
-      await web3.eth.accounts.wallet.remove(accounts.address);
+      // create token contracts and related objects
+      logger.info(`Wallet ${address}'s balances:`);
+      const contractIn = new ethers.Contract(fromToken, abi, signer);
+      const contractOut = new ethers.Contract(toToken, abi, signer);
 
-      const result = {
-        approveReceipt: approveReceipt,
-        swapReceipt: swapReceipt,
-      };
+      const [tokenIn, balanceTokenIn] = await getTokenAndBalance(
+        chainId,
+        contractIn,
+        address
+      );
+      const [tokenOut, balanceTokenOut] = await getTokenAndBalance(
+        chainId,
+        contractOut,
+        address
+      );
+
+      logger.info(
+        `Input: ${tokenIn.symbol} (${tokenIn.name}): ${ethers.utils.formatUnits(
+          balanceTokenIn,
+          tokenIn.decimals
+        )}`
+      );
+      logger.info(
+        `Output: ${tokenOut.symbol} (${
+          tokenOut.name
+        }): ${ethers.utils.formatUnits(balanceTokenOut, tokenOut.decimals)}`
+      );
+
+      // ============= PART 2 --- get Uniswap pool for pair TokenIn-TokenOut
+      logger.info("Loading pool information...");
+      const pool = await getPool(provider, tokenIn, tokenOut);
+
+      // ============= PART 3 --- Giving a quote for user input
+      logger.info("Loading up quote for a swap...");
+      const amountIn = ethers.utils.parseUnits(amount, tokenIn.decimals);
+
+      // ============= PART 4 --- Loading a swap route
+      logger.info("Loading a swap route...");
+      const route = await getQuote(
+        provider,
+        address,
+        tokenIn,
+        tokenOut,
+        amountIn,
+        amount,
+        pool
+      );
+
+      // ============= PART 5 --- Making actual swap
+      logger.info("Approving amount to spend...");
+      const approveReceipt = await approveSwap(
+        chainId,
+        provider,
+        signer,
+        address,
+        contractIn,
+        amountIn
+      );
+
+      logger.info("Making a swap...");
+      const receipt = await makeSwap(signer, route, address);
+
+      // ============= Final part --- printing results
+      const result = await getResult(
+        contractIn,
+        contractOut,
+        tokenIn,
+        tokenOut,
+        approveReceipt,
+        address,
+        receipt
+      );
+
       resolve(result);
     } catch (error) {
       logger.error(error.message);
@@ -41,4 +118,4 @@ const swapTX = async (from, quote, privateKey) => {
   });
 };
 
-module.exports = swapTX;
+module.exports = swapTx;
