@@ -3,15 +3,11 @@ const router = require("express").Router();
 const abi = require("../../../../utils/data/ERC20/abi");
 const { logger } = require("../../../../utils/winston");
 
-const getWeb3 = require("../../../../service/getWeb3");
 const isValidChainId = require("../../../../service/chainId");
 const isValidAddress = require("../../../../service/checksum/address");
 const isValidPrivateKey = require("../../../../service/checksum/privateKey");
 
-// command-line utilities
 const ethers = require("ethers");
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
 
 // uniswap and web3 modules
 const {
@@ -35,12 +31,23 @@ router.post("/swap", async (req, res) => {
     await isValidPrivateKey(privateKey);
     await isValidAddress(address);
 
+    // ============= PART 1 --- connect to blockchain and get token balances
+    logger.info("Connecting to blockchain, loading token balances...");
+    logger.info("");
+
+    // Ethers.js provider to access blockchain
+    // As we're using Alchemy, it is JsonRpcProvider
+    // In case of React app + MetaMask it should be initialized as "new ethers.providers.Web3Provider(window.ethereum);"
     const provider = new ethers.providers.JsonRpcProvider(
       "https://goerli.infura.io/v3/9d4c5b0d33a24161b25ca891e93fcb8e",
       chainId
     );
     const signer = new ethers.Wallet(privateKey, provider);
+    // In case of React + Metamask it should be initialized as "provider.getSigner();"
+    // as we already have signer provided by Metamask
+    // const signer = wallet.provider.getSigner(wallet.address);
 
+    // create token contracts and related objects
     const contractIn = new ethers.Contract(fromToken, abi, signer);
     const contractOut = new ethers.Contract(toToken, abi, signer);
 
@@ -61,6 +68,25 @@ router.post("/swap", async (req, res) => {
     const [tokenIn, balanceTokenIn] = await getTokenAndBalance(contractIn);
     const [tokenOut, balanceTokenOut] = await getTokenAndBalance(contractOut);
 
+    logger.info(`Wallet ${address}'s balances:`);
+    logger.info(
+      `Input: ${tokenIn.symbol} (${tokenIn.name}): ${ethers.utils.formatUnits(
+        balanceTokenIn,
+        tokenIn.decimals
+      )}`
+    );
+    logger.info(
+      `Output: ${tokenOut.symbol} (${
+        tokenOut.name
+      }): ${ethers.utils.formatUnits(balanceTokenOut, tokenOut.decimals)}`
+    );
+    logger.info("");
+
+    // ============= PART 2 --- get Uniswap pool for pair TokenIn-TokenOut
+    logger.info("Loading pool information...");
+
+    // this is Uniswap factory, same address on all chains
+    // (from https://docs.uniswap.org/protocol/reference/deployments)
     const UNISWAP_FACTORY_ADDRESS =
       "0x1F98431c8aD98523631AE4a59f267346ea31F984";
     const factoryContract = new ethers.Contract(
@@ -140,8 +166,27 @@ router.post("/swap", async (req, res) => {
       state.tick
     );
 
+    // print token prices in the pool
+    logger.info("Token prices in pool:");
+    logger.info(
+      `1 ${pool.token0.symbol} = ${pool.token0Price.toSignificant()} ${
+        pool.token1.symbol
+      }`
+    );
+    logger.info(
+      `1 ${pool.token1.symbol} = ${pool.token1Price.toSignificant()} ${
+        pool.token0.symbol
+      }`
+    );
+    logger.info("");
+
+    // ============= PART 3 --- Giving a quote for user input
+    logger.info("Loading up quote for a swap...");
+
     const amountIn = ethers.utils.parseUnits(amount, tokenIn.decimals);
 
+    // this is Uniswap quoter smart contract, same address on all chains
+    // (from https://docs.uniswap.org/protocol/reference/deployments)
     const UNISWAP_QUOTER_ADDRESS = "0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6";
     const quoterContract = new ethers.Contract(
       UNISWAP_QUOTER_ADDRESS,
@@ -157,6 +202,18 @@ router.post("/swap", async (req, res) => {
         amountIn,
         0
       );
+
+    logger.info(
+      `You'll get approximately ${ethers.utils.formatUnits(
+        quotedAmountOut,
+        tokenOut.decimals
+      )} ${tokenOut.symbol} for ${amount} ${tokenIn.symbol}`
+    );
+    logger.info("");
+
+    // ============= PART 4 --- Loading a swap route
+    logger.info("");
+    logger.info("Loading a swap route...");
 
     const inAmount = CurrencyAmount.fromRawAmount(tokenIn, amountIn.toString());
 
@@ -180,7 +237,26 @@ router.post("/swap", async (req, res) => {
     if (route == null || route.methodParameters === undefined)
       throw "No route loaded";
 
-    const V3_SWAP_ROUTER_ADDRESS = "0x4648a43B2C14Da09FdF82B161150d3F634f40491"; // here we just create a transaction object (not sending it to blockchain).
+    logger.info(`You'll get ${route.quote.toFixed()} of ${tokenOut.symbol}`);
+
+    // output quote minus gas fees
+    logger.info(`Gas Adjusted Quote: ${route.quoteGasAdjusted.toFixed()}`);
+    logger.info(
+      `Gas Used Quote Token: ${route.estimatedGasUsedQuoteToken.toFixed()}`
+    );
+    logger.info(`Gas Used USD: ${route.estimatedGasUsedUSD.toFixed()}`);
+    logger.info(`Gas Used: ${route.estimatedGasUsed.toString()}`);
+    logger.info(`Gas Price Wei: ${route.gasPriceWei}`);
+    logger.info("");
+
+    // // ============= PART 5 --- Making actual swap
+    logger.info("Approving amount to spend...");
+
+    // address of a swap router
+    const V3_SWAP_ROUTER_ADDRESS = "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45"; // here we just create a transaction object (not sending it to blockchain).
+    // For Metamask it will be just "await contractIn.approve(V3_SWAP_ROUTER_ADDRESS, amountIn);"
+
+    // here we just create a transaction object (not sending it to blockchain).
     const approveTxUnsigned = await contractIn.populateTransaction.approve(
       V3_SWAP_ROUTER_ADDRESS,
       amountIn
@@ -201,11 +277,13 @@ router.post("/swap", async (req, res) => {
     const approveTxSigned = await signer.signTransaction(approveTxUnsigned);
     // submit transaction to blockchain
     const submittedTx = await provider.sendTransaction(approveTxSigned);
+    logger.info(submittedTx);
     // wait till transaction completes
     const approveReceipt = await submittedTx.wait();
     if (approveReceipt.status === 0)
       throw new Error("Approve transaction failed");
 
+    logger.info("Making a swap...");
     const value = BigNumber.from(route.methodParameters.value);
     const transaction = {
       data: route.methodParameters.calldata,
@@ -226,12 +304,32 @@ router.post("/swap", async (req, res) => {
       throw new Error("Swap transaction failed");
     }
 
+    // ============= Final part --- printing results
     const [newBalanceIn, newBalanceOut] = await Promise.all([
       contractIn.balanceOf(address),
       contractOut.balanceOf(address),
     ]);
+    logger.info("");
+    logger.info("Swap completed successfully! ");
+    logger.info("");
+    logger.info("Updated balances:");
+    logger.info(
+      `${tokenIn.symbol}: ${ethers.utils.formatUnits(
+        newBalanceIn,
+        tokenIn.decimals
+      )}`
+    );
+    logger.info(
+      `${tokenOut.symbol}: ${ethers.utils.formatUnits(
+        newBalanceOut,
+        tokenOut.decimals
+      )}`
+    );
 
-    res.send({ newBalanceIn, newBalanceOut });
+    res.send({
+      newBalanceIn: ethers.utils.formatUnits(newBalanceIn, tokenIn.decimals),
+      newBalanceOut: ethers.utils.formatUnits(newBalanceOut, tokenOut.decimals),
+    });
   } catch (error) {
     logger.error(error.message);
     res.status(404).send({ message: error.message });
