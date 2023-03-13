@@ -39,8 +39,8 @@ const swapTx = async (
 
       // create token contracts and related objects
       logger.info(`Wallet ${address}'s balances:`);
-      const contractIn = new ethers.Contract(fromToken, abi, signer);
-      const contractOut = new ethers.Contract(toToken, abi, signer);
+      const contractIn = new ethers.Contract(fromToken.address, abi, signer);
+      const contractOut = new ethers.Contract(toToken.address, abi, signer);
 
       const [tokenIn, balanceTokenIn] = await getTokenAndBalance(
         chainId,
