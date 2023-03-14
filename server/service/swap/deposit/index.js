@@ -1,10 +1,42 @@
-const ethers = require("ethers");
-const { BigNumber } = require("@ethersproject/bignumber");
-
 const { weth9ABI } = require("../WETH9");
-const getSigner = require("../../getSigner");
+const getWeb3 = require("../../getWeb3");
 const getBalance = require("../../getBalance");
-const getProvider = require("../../getProvider");
+
+const { logger } = require("../../../utils/winston");
+
+const deposit = (token, privateKey, amount) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const web3 = await getWeb3(token.chainId);
+      const account = await web3.eth.accounts.wallet.add(privateKey);
+      const balance = await getBalance(token.chainId, account.address);
+
+      if (balance < Number(amount))
+        return reject({ message: "Not Enough Balance" });
+
+      const weth9 = new web3.eth.Contract(weth9ABI, token.address);
+
+      const wrapReceipt = await weth9.methods.deposit().send({
+        gas: "600000",
+        from: account.address,
+        value: web3.utils.toWei(amount),
+      });
+
+      await web3.eth.accounts.wallet.remove(account.address);
+
+      resolve(wrapReceipt);
+    } catch (error) {
+      return reject(error);
+    }
+  });
+};
+
+module.exports = deposit;
+
+// const ethers = require("ethers");
+// const { BigNumber } = require("@ethersproject/bignumber");
+// const getSigner = require("../../getSigner");
+// const getProvider = require("../../getProvider");
 
 // const {
 //   ETHEREUM_WETH_ADDRESS,
@@ -20,218 +52,21 @@ const getProvider = require("../../getProvider");
 //   POLYGON_MUMBAI_WETH_ADDRESS,
 // } = process.env;
 
-const deposit = (token, privateKey, amount) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const provider = await getProvider(token.chainId);
-      const signer = await getSigner(privateKey, provider);
-      const balance = await getBalance(token.chainId, signer.address);
-      if (balance < Number(amount))
-        return reject({ message: "Not Enough Balance" });
+// const provider = await getProvider(token.chainId);
+// const signer = await getSigner(privateKey, provider);
+// const balance = await getBalance(token.chainId, signer.address);
 
-      const weth9 = new ethers.Contract(token.address, weth9ABI, signer);
+// if (balance < Number(amount))
+//   return reject({ message: "Not Enough Balance" });
 
-      const wrapTx = await weth9.deposit({
-        value: ethers.utils.parseUnits(amount),
-        gasLimit: BigNumber.from("800000"),
-        // gasPrice: ethers.utils.parseUnits("10", "gwei"),
-        gasPrice: (await signer.getGasPrice()).toString(),
-      });
-      const wrapReceipt = await wrapTx.wait();
-      resolve(wrapReceipt);
+// const weth9 = new ethers.Contract(token.address, weth9ABI, signer);
 
-      // // 이더리움
-      // if (chainId == "1") {
-      //   const weth9 = new ethers.Contract(
-      //     ETHEREUM_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 롭스텐
-      // else if (chainId == "3") {
-      //   const weth9 = new ethers.Contract(
-      //     ROPSTEM_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 링크비
-      // else if (chainId == "4") {
-      //   const weth9 = new ethers.Contract(
-      //     RINKEBY_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 괴를리
-      // else if (chainId == "5") {
-      //   const weth9 = new ethers.Contract(
-      //     GOERLI_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 코반
-      // else if (chainId == "42") {
-      //   const weth9 = new ethers.Contract(KOVAN_WETH_ADDRESS, weth9ABI, signer);
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 옵티미즘
-      // else if (chainId == "10") {
-      //   const weth9 = new ethers.Contract(
-      //     OPTIMISM_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 옵티미스틱 코반
-      // else if (chainId == "69") {
-      //   const weth9 = new ethers.Contract(
-      //     OPTIMISTIC_KOVAN_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 아르빗럼 원 메인넷
-      // else if (chainId == "42161") {
-      //   const weth9 = new ethers.Contract(
-      //     ARBITRUM_ONE_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 아르빗럼 링크비 테스트넷
-      // else if (chainId == "421611") {
-      //   const weth9 = new ethers.Contract(
-      //     ARBITRUM_RINKEBY_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 폴리곤 메인넷
-      // else if (chainId == "137") {
-      //   const weth9 = new ethers.Contract(
-      //     POLYGON_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // }
-      // // 폴리곤 테스트넷
-      // else if (chainId == "80001") {
-      //   const weth9 = new ethers.Contract(
-      //     POLYGON_MUMBAI_WETH_ADDRESS,
-      //     weth9ABI,
-      //     signer
-      //   );
-      //   const weth9Balance = await weth9.balanceOf(signer.address);
-
-      //   const wrapTx = await weth9.deposit({
-      //     value: ethers.utils.parseUnits(amount),
-      //     gasLimit: BigNumber.from("800000"),
-      //     gasPrice: ethers.utils.parseUnits("10", "gwei"),
-      //   });
-      //   const wrapReceipt = await wrapTx.wait();
-      //   resolve(wrapReceipt);
-      // } else {
-      //   return reject({ message: "Unsupported chainId" });
-      // }
-    } catch (error) {
-      return reject(error);
-    }
-  });
-};
-
-module.exports = deposit;
+// const wrapTx = await weth9.deposit({
+//   value: ethers.utils.parseUnits(amount),
+//   gasLimit: BigNumber.from("800000"),
+//   gasPrice: ethers.utils.parseUnits("10", "gwei"),
+// });
+// const wrapReceipt = await wrapTx.wait();
 
 //   const approvalTx = await signer.sendTransaction({
 //     to: WETH9_ADDRESS,
