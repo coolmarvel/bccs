@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../utils/winston");
 
-const swapTx = require("../../../../service/swap/tx/test");
+const swapTx = require("../../../../service/swap/txV2");
 const isValidChainId = require("../../../../service/chainId");
 const isValidAddress = require("../../../../service/checksum/address");
 const isValidPrivateKey = require("../../../../service/checksum/privateKey");
