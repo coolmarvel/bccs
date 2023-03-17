@@ -18,11 +18,7 @@ const options = {
         email: "marvel19971125@gmail.com",
       },
     },
-    servers: [
-      {
-        url: "http://localhost:8080",
-      },
-    ],
+    servers: [{ url: "http://localhost:8080" }],
     securityDefinitions: {
       api_key: {
         type: "apiKey",

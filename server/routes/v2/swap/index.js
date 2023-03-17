@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const getWrapBalanceRouter = require("./getWrapBalance");
 const getTokensRouter = require("./getTokens");
-const widthrawRouter = require("./widthdraw");
+const widthrawRouter = require("./withdraw");
 const getPriceRouter = require("./getPrice");
 const getQuoteRouter = require("./getQuote");
 const depositRouter = require("./deposit");
