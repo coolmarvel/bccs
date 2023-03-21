@@ -1,20 +1,31 @@
-const app = require("../server");
 const debug = require("debug")("servertest:server");
+const { sequelize } = require("../models");
+const app = require("../server");
+
 const http = require("http");
 
 const { logger } = require("../utils/winston");
 
 const port = normalizePort(process.env.PORT || "8080");
+
 app.set("port", port);
 
 const server = http.createServer(app);
 
 server.listen(port, () => {
-  console.log(`노드 서버 포트 : ${port} 연결`);
   logger.info(`노드 서버 포트 : ${port} 연결`);
 });
 server.on("error", onError);
 server.on("listening", onListening);
+
+// sequelize
+//   .sync({ force: false })
+//   .then(() => {
+//     logger.info("DB Connected success");
+//   })
+//   .catch((err) => {
+//     logger.error(`DB Connected failed ${err}`);
+//   });
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
