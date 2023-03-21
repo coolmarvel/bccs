@@ -14,11 +14,10 @@ const compileContract = (name, contract) => {
           logger.info(`${name}.sol contract create success`);
 
           const compile = cmd.runSync("truffle compile");
-          logger.info(compile.data);
 
-          fs.readFile(`public/${name}.sol`, "utf8", async (err, data) => {
-            logger.info(data);
-          });
+          // fs.readFile(`public/${name}.sol`, "utf8", async (err, data) => {
+          //   logger.info(data);
+          // });
 
           fs.unlink(`public/${name}.sol`, async (err) => {
             if (err) {
