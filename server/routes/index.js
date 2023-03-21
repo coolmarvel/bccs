@@ -20,7 +20,7 @@ router.use("/v4", v4Router);
 //   authorizeAsync: true,
 //   realm: "Imb4T3st4pp",
 //   challenge: false,
-// });
+// }),
 
 router.get("/", (req, res) => {
   try {
