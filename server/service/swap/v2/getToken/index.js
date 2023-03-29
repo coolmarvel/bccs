@@ -1,7 +1,7 @@
 const { Token } = require("@uniswap/sdk-core");
 const { logger } = require("../../../../utils/winston");
 
-const getTokenAndBalance = (web3, chainId, contract, address) => {
+const getToken = (web3, chainId, contract, address) => {
   return new Promise(async (resolve, reject) => {
     try {
       let [decimals, symbol, name, balance] = await Promise.all([
@@ -20,11 +20,11 @@ const getTokenAndBalance = (web3, chainId, contract, address) => {
       );
       logger.info(`${token.symbol}: ${web3.utils.fromWei(balance)}`);
 
-      resolve([token, balance]);
+      resolve(token);
     } catch (error) {
       return reject(error);
     }
   });
 };
 
-module.exports = getTokenAndBalance;
+module.exports = getToken;

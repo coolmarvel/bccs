@@ -6,8 +6,9 @@ const { logger } = require("../../../utils/winston");
 const makeSwap = require("./make");
 const getPool = require("./getPool");
 const getQuote = require("./getQuote");
+const getToken = require("./getToken");
 const approveSwap = require("./approve");
-const getTokenAndBalance = require("./getTokenAndBalance");
+const getResult = require("./getResult");
 
 const swap = (chainId, privateKey, from, to, amount) => {
   return new Promise(async (resolve, reject) => {
@@ -22,13 +23,13 @@ const swap = (chainId, privateKey, from, to, amount) => {
       const contractOut = new web3.eth.Contract(abi, to.address);
 
       logger.info(`Wallet ${account.address}'s balances:`);
-      const [tokenIn, balanceTokenIn] = await getTokenAndBalance(
+      const tokenIn = await getToken(
         web3,
         chainId,
         contractIn,
         account.address
       );
-      const [tokenOut, balanceTokenOut] = await getTokenAndBalance(
+      const tokenOut = await getToken(
         web3,
         chainId,
         contractOut,

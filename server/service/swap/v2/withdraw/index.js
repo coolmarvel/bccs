@@ -1,6 +1,6 @@
 const { weth9ABI } = require("../../WETH9");
+const getBalance = require("../getBalance");
 const getWeb3 = require("../../../getWeb3");
-const getBalance = require("../getWrapTokenBalance");
 
 const withdraw = (token, privateKey, amount) => {
   return new Promise(async (resolve, reject) => {
@@ -10,13 +10,14 @@ const withdraw = (token, privateKey, amount) => {
       const balance = await getBalance(token.chainId, token, privateKey);
 
       if (balance < Number(amount))
-        return reject({ message: "Not Enough Balance" });
+        return reject({ message: "Not Enough Balance to Withdraw" });
 
       const weth9 = new web3.eth.Contract(weth9ABI, token.address);
-
       const withdrawReceipt = await weth9.methods
         .withdraw(web3.utils.toWei(amount))
         .send({ gas: "600000", from: account.address });
+
+      await web3.eth.accounts.wallet.remove(account.address);
 
       resolve(withdrawReceipt);
     } catch (error) {
@@ -26,18 +27,3 @@ const withdraw = (token, privateKey, amount) => {
 };
 
 module.exports = withdraw;
-
-// const ethers = require("ethers");
-// const { BigNumber } = require("@ethersproject/bignumber");
-// const getSigner = require("../../getSigner");
-// const getProvider = require("../../getProvider");
-
-// const provider = await getProvider(token.chainId);
-// const signer = await getSigner(privateKey, provider);
-// const weth9 = new ethers.Contract(token.address, weth9ABI, signer);
-
-// const withdrawTx = await weth9.withdraw(ethers.utils.parseUnits(amount), {
-//   gasLimit: BigNumber.from("800000"),
-//   gasPrice: ethers.utils.parseUnits("10", "wei"),
-// });
-// const withdrawReceipt = await withdrawTx.wait();
