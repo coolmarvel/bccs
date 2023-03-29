@@ -22,7 +22,18 @@ router.post("/tx", async (req, res) => {
     res.send(result);
   } catch (error) {
     logger.error(error.message);
-    res.status(404).send({ message: error.message });
+    if (error.message.includes("chainId required")) {
+      res.status(412).send({ message: error.message });
+    } else if (
+      error.message.includes("Invalid address") ||
+      error.message.includes("Invalid privateKey")
+    ) {
+      res.status(400).send({ message: error.message });
+    } else if (error.message.includes("Unsupported chainId")) {
+      res.status(416).send({ message: error.message });
+    } else {
+      res.status(404).send({ message: error.message });
+    }
   }
 });
 

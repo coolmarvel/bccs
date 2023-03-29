@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../utils/winston");
 
-const deposit = require("../../../../service/swap/v1/deposit");
+const deposit = require("../../../../service/swap/v2/deposit");
 const isValidChainId = require("../../../../service/chainId");
 const isValidPrivateKey = require("../../../../service/checksum/privateKey");
 
@@ -18,7 +18,18 @@ router.post("/deposit", async (req, res) => {
     res.send({ receipt });
   } catch (error) {
     logger.error(error.message);
-    res.status(404).send({ message: error.message });
+    if (
+      error.message.includes("chainId required") ||
+      error.message.includes("Not Enough Balance")
+    ) {
+      res.status(412).send({ message: error.message });
+    } else if (error.message.includes("Invalid privateKey")) {
+      res.status(400).send({ message: error.message });
+    } else if (error.message.includes("Unsupported chainId")) {
+      res.status(416).send({ message: error.message });
+    } else {
+      res.status(404).send({ message: error.message });
+    }
   }
 });
 
