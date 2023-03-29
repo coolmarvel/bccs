@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../utils/winston");
 
-const getQuote = require("../../../../service/swap/getQuote");
+const getQuote = require("../../../../service/swap/v1/getQuote");
 
 router.post("/quote", async (req, res) => {
   try {

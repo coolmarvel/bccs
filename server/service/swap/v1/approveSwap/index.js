@@ -1,4 +1,4 @@
-const { logger } = require("../../../utils/winston");
+const { logger } = require("../../../../utils/winston");
 
 const { V3_SWAP_ROUTER_ADDRESS } = process.env;
 

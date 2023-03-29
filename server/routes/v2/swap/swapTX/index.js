@@ -2,6 +2,7 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../utils/winston");
 
+const swap = require("../../../../service/swap/v2");
 const swapTx = require("../../../../service/swap/txV2");
 const isValidChainId = require("../../../../service/chainId");
 const isValidAddress = require("../../../../service/checksum/address");
@@ -15,7 +16,8 @@ router.post("/tx", async (req, res) => {
     await isValidPrivateKey(privateKey);
     await isValidAddress(address);
 
-    const result = await swapTx(chainId, privateKey, from, to, amount);
+    // const result = await swapTx(chainId, privateKey, from, to, amount);
+    const result = await swap(chainId, privateKey, from, to, amount);
 
     res.send(result);
   } catch (error) {
@@ -116,19 +118,19 @@ module.exports = router;
  *                      from: "0x2a4bb4f179cc07ce568e07d8f5f7403b8eb7f79d"
  *                      gasUsed:  121817
  *                      logs:
- *                        [{address: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b", 
+ *                        [{address: "0xB4FBF271143F4FBf7B91A5ded31805e42b2208d6", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b",
  *                        blockNumber: 8668072, data: "0x0000000000000000000000000000000000000000000000000de0b6b3a7640000", logIndex: 10, removed: false,
  *                        topics: ["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef", "0x0000000000000000000000002a4bb4f179cc07ce568e07d8f5f7403b8eb7f79d", "0x00000000000000000000000028cee28a7c4b4022ac92685c07d2f33ab1a0e122"],
  *                        transactionHash: "0x7b79a82927d4e41c8c874aba0429a542af7f95a87d589a467dbf247a88ba400a", transactionIndex: 9, id: "log_e3232f7e"},
- *                        {address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b", 
+ *                        {address: "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b",
  *                        blockNumber: 8668072, data: "0x0000000000000000000000000000000000000000000000005245a9249ffb971d", logIndex: 11, removed: false,
  *                        topics: ["0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef", "0x00000000000000000000000028cee28a7c4b4022ac92685c07d2f33ab1a0e122", "0x0000000000000000000000002a4bb4f179cc07ce568e07d8f5f7403b8eb7f79d"],
  *                        transactionHash: "0x7b79a82927d4e41c8c874aba0429a542af7f95a87d589a467dbf247a88ba400a", transactionIndex: 9, id: "log_e192bdad"},
- *                        {address: "0x28cee28a7C4b4022AC92685C07d2f33Ab1A0e122", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b", 
+ *                        {address: "0x28cee28a7C4b4022AC92685C07d2f33Ab1A0e122", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b",
  *                        blockNumber: 8668072, data: "0x0000000000000000000000000000000000000000000008a6d557edbea1766af100000000000000000000000000000000000000000000017488f202159589ab26", logIndex: 12, removed: false,
  *                        topics: ["0x1c411e9a96e071241c2f21f7726b17ae89e3cab4c78be50e062b03a9fffbbad1"],
  *                        transactionHash: "0x7b79a82927d4e41c8c874aba0429a542af7f95a87d589a467dbf247a88ba400a", transactionIndex: 9, id: "log_6b503e81"},
- *                        {address: "0x28cee28a7C4b4022AC92685C07d2f33Ab1A0e122", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b", 
+ *                        {address: "0x28cee28a7C4b4022AC92685C07d2f33Ab1A0e122", blockHash: "0x2bad5336f2186635502bc752e46edc211acf2d4105119f967108e1d4f5e9374b",
  *                        blockNumber: 8668072, data: "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000de0b6b3a76400000000000000000000000000000000000000000000000000005245a9249ffb971d0000000000000000000000000000000000000000000000000000000000000000", logIndex: 13, removed: false,
  *                        topics: ["0xd78ad95fa46c994b6551d0da85fc275fe613ce37657fb8d5e3d130840159d822", "0x00000000000000000000000068b3465833fb72a70ecdf485e0e4c7bd8665fc45", "0x0000000000000000000000002a4bb4f179cc07ce568e07d8f5f7403b8eb7f79d"],
  *                        transactionHash: "0x7b79a82927d4e41c8c874aba0429a542af7f95a87d589a467dbf247a88ba400a", transactionIndex: 9, id: "log_e432438a"}]

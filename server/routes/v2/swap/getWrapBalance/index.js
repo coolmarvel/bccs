@@ -3,7 +3,7 @@ const router = require("express").Router();
 const { logger } = require("../../../../utils/winston");
 
 const isValidChainId = require("../../../../service/chainId");
-const getBalance = require("../../../../service/swap/getWrapTokenBalance");
+const getBalance = require("../../../../service/swap/v1/getWrapTokenBalance");
 const isValidPrivateKey = require("../../../../service/checksum/privateKey");
 
 router.post("/get", async (req, res) => {

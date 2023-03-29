@@ -1,8 +1,8 @@
-const { weth9ABI } = require("../WETH9");
-const getWeb3 = require("../../getWeb3");
+const { weth9ABI } = require("../../WETH9");
+const getWeb3 = require("../../../getWeb3");
 const getBalance = require("../getWrapTokenBalance");
 
-const { logger } = require("../../../utils/winston");
+const { logger } = require("../../../../utils/winston");
 
 const withdraw = (token, privateKey, amount) => {
   return new Promise(async (resolve, reject) => {

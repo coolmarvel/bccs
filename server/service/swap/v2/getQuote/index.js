@@ -1,47 +1,36 @@
-const ethers = require("ethers");
+const { Web3Provider } = require("@ethersproject/providers");
 const { AlphaRouter } = require("@uniswap/smart-order-router");
 const { Percent, TradeType, CurrencyAmount } = require("@uniswap/sdk-core");
 const QuoterABI = require("@uniswap/v3-periphery/artifacts/contracts/lens/Quoter.sol/Quoter.json");
 
-const { logger } = require("../../../utils/winston");
+const { logger } = require("../../../../utils/winston");
 
 const { UNISWAP_QUOTER_ADDRESS } = process.env;
 
-const getQuote = async (
-  provider,
-  address,
-  tokenIn,
-  tokenOut,
-  amountIn,
-  amount,
-  pool
-) => {
+const getQuote = (web3, pool, amount, amountIn, tokenIn, tokenOut, address) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const quoterContract = new ethers.Contract(
-        UNISWAP_QUOTER_ADDRESS,
+      const provider = new Web3Provider(web3.currentProvider);
+      const quoterContract = new web3.eth.Contract(
         QuoterABI.abi,
-        provider
+        UNISWAP_QUOTER_ADDRESS
       );
-      const quotedAmountOut =
-        await quoterContract.callStatic.quoteExactInputSingle(
+      const quotedAmountOut = await quoterContract.methods
+        .quoteExactInputSingle(
           tokenIn.address,
           tokenOut.address,
           pool.fee,
           amountIn,
           0
-        );
+        )
+        .call();
       logger.info(
-        `You'll get approximately ${ethers.utils.formatUnits(
-          quotedAmountOut,
-          tokenOut.decimals
-        )} ${tokenOut.symbol} for ${amount} ${tokenIn.symbol}`
+        `You'll get approximately ${web3.utils.fromWei(quotedAmountOut)} ${
+          tokenOut.symbol
+        } for ${amount} ${tokenIn.symbol}`
       );
+      const inAmount = CurrencyAmount.fromRawAmount(tokenIn, amountIn);
 
-      const inAmount = CurrencyAmount.fromRawAmount(
-        tokenIn,
-        amountIn.toString()
-      );
       const router = new AlphaRouter({
         chainId: tokenIn.chainId,
         provider: provider,
@@ -53,7 +42,7 @@ const getQuote = async (
         {
           recipient: address,
           slippageTolerance: new Percent(5, 100), // Big slippage – for a test
-          deadline: Math.floor(Date.now() / 1000 + 1800), // add 1800 seconds – 30 mins deadline
+          deadline: Math.floor(Date.now() / 1000 + 60), // add 1800 seconds – 1 mins deadline
         },
         { maxSwapsPerPath: 1 }
       );
@@ -70,31 +59,9 @@ const getQuote = async (
 
       resolve(route);
     } catch (error) {
-      logger.error(error.message);
       return reject(error);
     }
   });
 };
 
 module.exports = getQuote;
-
-// const axios = require("axios");
-// const qs = require("qs");
-
-// if (!from || !to || !value || !address) {
-//   return reject({ message: "params are required" });
-// }
-
-// const amount = Number(value * 10 ** from.decimals);
-// const params = {
-//   buyToken: from.address,
-//   sellToken: to.address,
-//   sellAmount: amount,
-//   takerAddress: address,
-//   skipValidation: true,
-// };
-// const result = await axios
-//   .get(`https://api.0x.org/swap/v1/quote?${qs.stringify(params)}`)
-//   .then((response) => {
-//     return response.data;
-//   });

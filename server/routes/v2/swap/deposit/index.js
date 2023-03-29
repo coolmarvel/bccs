@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../utils/winston");
 
-const deposit = require("../../../../service/swap/deposit");
+const deposit = require("../../../../service/swap/v1/deposit");
 const isValidChainId = require("../../../../service/chainId");
 const isValidPrivateKey = require("../../../../service/checksum/privateKey");
 

@@ -2,7 +2,7 @@ const router = require("express").Router();
 
 const { logger } = require("../../../../utils/winston");
 
-const withdraw = require("../../../../service/swap/withdraw");
+const withdraw = require("../../../../service/swap/v1/withdraw");
 const isValidChainId = require("../../../../service/chainId");
 const isValidPrivateKey = require("../../../../service/checksum/privateKey");
 

@@ -1,5 +1,5 @@
-const { weth9ABI } = require("../WETH9");
-const getWeb3 = require("../../getWeb3");
+const { weth9ABI } = require("../../WETH9");
+const getWeb3 = require("../../../getWeb3");
 
 const getBalance = (chainId, token, privateKey) => {
   return new Promise(async (resolve, reject) => {

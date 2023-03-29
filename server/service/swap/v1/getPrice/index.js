@@ -1,7 +1,7 @@
 const axios = require("axios");
 const qs = require("qs");
 
-const { logger } = require("../../../utils/winston");
+const { logger } = require("../../../../utils/winston");
 
 const getPrice = async (from, to, value) => {
   return new Promise(async (resolve, reject) => {

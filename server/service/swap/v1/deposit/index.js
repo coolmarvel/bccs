@@ -1,8 +1,8 @@
-const { weth9ABI } = require("../WETH9");
-const getWeb3 = require("../../getWeb3");
-const getBalance = require("../../getBalance");
+const { weth9ABI } = require("../../WETH9");
+const getWeb3 = require("../../../getWeb3");
+const getBalance = require("../../../getBalance");
 
-const { logger } = require("../../../utils/winston");
+const { logger } = require("../../../../utils/winston");
 
 const deposit = (token, privateKey, amount) => {
   return new Promise(async (resolve, reject) => {
