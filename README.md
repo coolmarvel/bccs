@@ -34,106 +34,47 @@ yarn start
 
 ### 1-2-1. 서비스 구조
 
-- **V1** (Contract)  
-  \***\*컨트랙트\*\*** (작성, 컴파일, 배포)
-- **V2** (Account, Network, Scan, Swap, Tx)  
-  \***\*지갑\*\*** (복구키 생성, 지갑 생성, 내보내기, 가져오기, 등록하기)  
-  \***\*네트워크\*\*** (지갑 별 블록체인 네트워크 추가)  
-  \***\*트랜잭션 내역 조회\*\*** (이더리움, 폴리곤, 클레이튼만 가능) -> explorer 사이트 웹 크롤링  
-  \***\*토큰스왑\*\*** (이더리움 계열만 가능) -> 유니스왑 사용  
-  \***\*트랜잭션\*\*** (밸류 전송 및 조회, 대납 전송) -> 대납기능은 클레이튼에만 있음
-- IPFS (Pin, Unpin)
+- **V1** (Contract)  
+  ***컨트랙트*** (작성, 컴파일, 배포)
+- **V2** (이더리움 계열 Account, Network, Scan, Swap, Tx)  
+  ***지갑*** (복구키 생성, 지갑 생성, 내보내기, 가져오기, 등록하기)  
+  ***네트워크*** (지갑 별 블록체인 네트워크 추가)  
+  ***트랜잭션 내역 조회*** (이더리움, 폴리곤, 클레이튼만 가능) -> explorer 사이트 웹 크롤링  
+  ***토큰스왑*** (이더리움 계열만 가능) -> 유니스왑 사용  
+  ***트랜잭션*** (밸류 전송 및 조회, 대납 전송, 수수료 조회) -> 대납기능은 클레이튼에만 있음  
+  **V3** (비트코인 계열 Account, Tx) -> 사용 못함  
+  ***지갑*** (지갑 생성, 등록)  
+  **V4** (커스텀 토큰(ERC20) 가져오기, 밸류 전송 및 조회, 수수료 조회, 대납 전송)  
+    -> 대납기능은 클레이튼의 커스텀 토큰만 가능
 
-## 2. Contract
-
-Solidity를 활용하여 컨트랙트 작성 및 Truffle 프레임워크를 이용해 컴파일 및 배포
+## 2. API 테스트 방법
 
 ### 2-1-1. Installation
 
-패키지 맨저로 npm 또는 yarn을 사용합니다.
+postman: [https://www.postman.com/downloads/] 다운로드
 
+### 2-1-2. IP & PORT Config
+
+- Localhost
 ```bash
-npm install
-
-or
-
-yarn install
+http://localhost:${port}/api
 ```
-
-### 2-1-2. ENV Config
-
-- MNEMONIC (복구키)
-
+- DevServer
 ```bash
-MNEMONIC="YOUR_MNEMONIC"
+http://10.10.10.148:${port}/api
 ```
-
-- PRIVATEKEY (지갑 비밀키)
-
+- ProdServer
 ```bash
-PRIVATE_KEY="YOUR_PRIVATEY"
+http://3.39.180.120:${port}/api
 ```
-
-복구키와 비밀키를 선언해야 컨트랙트를 배포할 수 있습니다. (로컬 가나슈 테스트넷 제외)
+상용서버(Prod)는 클라이언트 포트를 제외하고 다 인바운드를 닫아서 테스트 못함.
 
 ### 2-1-3. Usage
 
-- 테스트넷 배포시
+- 블록체인과 통신하는 API는 무조건 req.headers(체인ID)를 설정해야함
+```bash  
+예시 (클레이튼과 통신할 경우)
 
-#####
-
-**./truffle-config.js**
-
-#####
-
-module.exports 객체안에
-
-```bash
-"contracts_build_directory": "./build/baobab/contracts"
+x-chain-id="1001"
 ```
-
-를 명시 후 터미널에 아래 명령어 입력
-
-```bash
-truffle migrate --network baobab
-```
-
-- 메인넷 배포시
-
-```bash
-"contracts_build_directory": "./build/cypress/contracts"
-```
-
-를 명시 후 터미널에 아래 명령어 입력
-
-```bash
-truffle migrate --network cypress
-```
-
-이미 상용서버에는 배포된 파일이 있으므로 가나슈 로컬 네트워크에서 테스트 진행 요망
-
-### 2-1-4. Owner
-
-상용서버에는 이미 배포된 컨트랙트가 있습니다. 절대 지우시면 안됩니다.
-
-#####
-
-**상용서버에 배포한 지갑 정보**
-
-- 지갑 주소
-
-```bash
-address="0xadc565Bb88aA72aa14b98Cb6196f216900614b3c"
-```
-
-- 지갑 비밀키
-
-```bash
-privateKey="0xa58f34a8853bde661ca77ad884faf3d355ebb1a54dc9ccab007f89e4b33cda8e"
-```
-
-- 복구키
-
-```bash
-mnemonic="another recipe eyebrow direct blade universe brush clay retire where crush spider"
-```
+- 밸런스 및 토큰뿐 아니라 블록체인에 트랜잭션을 발생하는 API는 충분한 밸런스를 가지고 있어야 함.
